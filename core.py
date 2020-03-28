@@ -2,16 +2,35 @@ import telebot
 import os
 import requests
 import re
-
-
+from telebot import types
 
 
 fcx_markup = [
-    [KeyboardButton(text='Balances 0.0000000 BTC', "bop")],
+    ['Balances 0.0000000 BTC'],
     ["Deposit", "Withdrawal"],
     ["Reinvest", "Transactions"],
     ["Team", "Settings", "Support"]
     ]
+
+
+welcome_text = """
+        <b>Welcome to FCX Trading Bot</b>
+
+FCX Trading Bot is one of the most innovative Crypto and Forex trading providers.
+
+Successful traders, now allow access to the financial world not only for big investors but also for the average person. 
+With the simplified interface of the FCX Trading Bot, investing has never been
+this easy to handle.
+
+FCX Trading Bot profits depends on the global market situation and there is no guarantee of a fixed percentage of interest.
+Our strategy is to generate profits at the lowest possible risk.
+
+Deposits are being handled at the highest security level according
+to a modern portfolio management serving the FCX Trading Bot.
+
+                """
+
+
 
 def get_image_url():
     allowed_extension = ['jpg','jpeg','png']

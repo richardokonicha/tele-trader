@@ -3,16 +3,16 @@ import os
 
 from flask import Flask, request
 import telebot
-from core import fcx_markup
-from telegram import ReplyKeyboardMarkup, KeyboardButton
+# from core import fcx_markup
 
 
 TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ"
+# TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
 
 
-keys = ReplyKeyboardMarkup(keyboard=fcx_markup, resize_keyboard=True)
+# keys = ReplyKeyboardMarkup(keyboard=fcx_markup, resize_keyboard=True)
 text = "this is a test suit"
 
 
@@ -20,7 +20,7 @@ text = "this is a test suit"
 def start(message):
     # bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
     chat_id = 1053579181
-    bot.send_message(chat_id, text=text, reply_markup=keys)
+    bot.send_message(chat_id, text=text)
 
 
 
