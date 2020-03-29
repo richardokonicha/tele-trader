@@ -4,6 +4,14 @@ import requests
 import re
 from telebot import types
 
+######### keyboard markup below here #######
+
+from telebot import types
+keys = types.ReplyKeyboardMarkup()
+
+select_lang_markup = [
+    ["/ENGLISH", "ITALIAN"]
+]
 
 fcx_markup = [
     ['Balances 0.0000000 BTC'],
@@ -11,7 +19,18 @@ fcx_markup = [
     ["Reinvest", "Transactions"],
     ["Team", "Settings", "Support"]
     ]
+######### keyboard markup above here #######
 
+
+
+
+######### Test responses below here ###########
+
+select_lang_text = """
+<b>Select your perfered language</b>
+You can always change your language by going to the settings menu
+
+"""
 
 welcome_text = """
         <b>Welcome to FCX Trading Bot</b>
@@ -29,6 +48,8 @@ Deposits are being handled at the highest security level according
 to a modern portfolio management serving the FCX Trading Bot.
 
                 """
+
+####### Text responses above here #############
 
 
 
