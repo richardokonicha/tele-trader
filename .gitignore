@@ -1,3 +1,6 @@
 launch_client.py
 datajson.py
 alchemy.py
+.vscode/launch.json
+_pycache_/*
+__pycache__/datajson.cpython-37.pyc

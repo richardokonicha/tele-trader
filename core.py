@@ -10,7 +10,7 @@ from telebot import types
 keys = types.ReplyKeyboardMarkup()
 
 select_lang_markup = [
-    ["/ENGLISH", "ITALIAN"]
+    ["ENGLISH", "ITALIAN"]
 ]
 
 fcx_markup = [
@@ -26,49 +26,70 @@ fcx_markup = [
 
 ######### Test responses below here ###########
 
-select_lang_text = """
-<b>Select your perfered language</b>
-You can always change your language by going to the settings menu
 
-"""
 
-welcome_text = """
-        <b>Welcome to FCX Trading Bot</b>
+responses = {
+    "select_prefered_lang": """Select your prefered language""",
 
-FCX Trading Bot is one of the most innovative Crypto and Forex trading providers.
+    "set_lang_text": {
+        "ENGLISH": """Your language has been set to ENGLISH you can change this anytime by going to setting from the main menu""",
+        "ITALIAN": """je suis italian yeapp """
+    },
 
-Successful traders, now allow access to the financial world not only for big investors but also for the average person. 
-With the simplified interface of the FCX Trading Bot, investing has never been
-this easy to handle.
 
-FCX Trading Bot profits depends on the global market situation and there is no guarantee of a fixed percentage of interest.
-Our strategy is to generate profits at the lowest possible risk.
+    ###### Here is the welcome text users get each time they press start
+    "welcome_text": {
 
-Deposits are being handled at the highest security level according
-to a modern portfolio management serving the FCX Trading Bot.
+        "ENGLISH": """
+                        <b>Welcome to FCX Trading Bot</b>
 
-                """
+                FCX Trading Bot is one of the most innovative Crypto and Forex trading providers.
+
+                Successful traders, now allow access to the financial world not only for big investors but also for the average person. 
+                With the simplified interface of the FCX Trading Bot, investing has never been
+                this easy to handle.
+
+                FCX Trading Bot profits depends on the global market situation and there is no guarantee of a fixed percentage of interest.
+                Our strategy is to generate profits at the lowest possible risk.
+
+                Deposits are being handled at the highest security level according
+                to a modern portfolio management serving the FCX Trading Bot.
+                                """,
+
+
+        "ITALIAN": """
+                        <b>Benvenuti a FCX Trading Bot </b>
+
+                FCX Trading Bot è uno dei più innovativi fornitori di Crypto e Forex trading. I trader di successo ora permettono l'accesso 
+                al mondo finanziario non solo ai grandi investitori ma anche alla persona media. Con l'interfaccia semplificata del FCX Trading Bot 
+                l'investimento non è mai stato così facile da gestire.
+
+                I profitti del FCX Trading Bot dipendono dalla situazione del mercato globale e non c'è garanzia di una percentuale fissa di interessi.
+                La nostra strategia è quella di generare profitti al minor rischio possibile.
+
+                I depositi sono gestiti al più alto livello di sicurezza secondo una moderna gestione di portafoglio al servizio del Trading Bot FCM.
+
+                                """
+    }
+}
+
+
+
+# welcome_text = """
+#         <b>Welcome to FCX Trading Bot</b>
+
+# FCX Trading Bot is one of the most innovative Crypto and Forex trading providers.
+
+# Successful traders, now allow access to the financial world not only for big investors but also for the average person. 
+# With the simplified interface of the FCX Trading Bot, investing has never been
+# this easy to handle.
+
+# FCX Trading Bot profits depends on the global market situation and there is no guarantee of a fixed percentage of interest.
+# Our strategy is to generate profits at the lowest possible risk.
+
+# Deposits are being handled at the highest security level according
+# to a modern portfolio management serving the FCX Trading Bot.
+
+#                 """
 
 ####### Text responses above here #############
-
-
-
-def get_image_url():
-    allowed_extension = ['jpg','jpeg','png']
-    file_extension = ''
-    while file_extension not in allowed_extension:
-        url = get_url()
-        file_extension = re.search("([^.]*)$",url).group(1).lower()
-    return url
-
-
-def get_url():
-    content = requests.get('https://random.dog/woof.json')
-    url = content.json()["url"]
-    return url
-
-
-def bop(bot, updater):
-    url = get_image_url()
-    chat_id = updater.message.chat.id
-    bot.send_photo(chat_id, photo=url)
