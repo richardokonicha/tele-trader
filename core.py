@@ -4,25 +4,6 @@ import requests
 import re
 from telebot import types
 
-######### keyboard markup below here #######
-
-from telebot import types
-keys = types.ReplyKeyboardMarkup()
-
-
-select_lang_markup = [
-    ["ENGLISH", "ITALIAN"]
-]
-
-fcx_markup = [
-    ["Balances BTC"],
-    ["Deposit", "Withdrawal"],
-    ["Reinvest", "Transactions"],
-    ["Team", "Settings", "Support"]
-    ]
-######### keyboard markup above here #######
-
-
 
 
 ######### Test responses below here ###########
@@ -33,8 +14,10 @@ responses = {
     "select_prefered_lang": """Select your prefered language""",
 
     "set_lang_text": {
-        "ENGLISH": """Your language has been set to ENGLISH you can change this anytime by going to setting from the main menu""",
-        "ITALIAN": """je suis italian yeapp """
+        "ENGLISH": """Your language has been set to ENGLISH
+        you can change this anytime by going to setting from the main menu""",
+        "ITALIAN": """La tua lingua è stata impostata su INGLESE,
+                puoi cambiarla in qualsiasi momento andando all'impostazione dal menu principale"""
     },
 
     ####################################################################
