@@ -25,6 +25,13 @@
     "user": "Reechee",
     "lang": "ENGLISH",
     "registered_date": "2020-03-29T20:27:33.668953",
-    "is_new_user": true
+    "is_new_user": false,
+    "last_visited": "2020-03-30T13:57:51.126122",
+    "investment": {
+      "balance": 900,
+      "active_investment": 300,
+      "active_reinvestment": 200,
+      "pending_investment": 100
+    }
   }
 }

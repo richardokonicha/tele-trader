@@ -9,12 +9,13 @@ from telebot import types
 from telebot import types
 keys = types.ReplyKeyboardMarkup()
 
+
 select_lang_markup = [
     ["ENGLISH", "ITALIAN"]
 ]
 
 fcx_markup = [
-    ['Balances 0.0000000 BTC'],
+    ["Balances BTC"],
     ["Deposit", "Withdrawal"],
     ["Reinvest", "Transactions"],
     ["Team", "Settings", "Support"]
@@ -36,7 +37,7 @@ responses = {
         "ITALIAN": """je suis italian yeapp """
     },
 
-
+    ####################################################################
     ###### Here is the welcome text users get each time they press start
     "welcome_text": {
 
@@ -70,7 +71,42 @@ responses = {
                 I depositi sono gestiti al più alto livello di sicurezza secondo una moderna gestione di portafoglio al servizio del Trading Bot FCM.
 
                                 """
-    }
+    },
+
+
+
+    #######################################################################
+    ############## Balance text and no active balance text ###########
+    # 
+    
+    # "balance_text": {
+
+    #     "ENGLISH": f"""
+    #                 Your account balance is {balance} BTC
+    #                 Your active investments is {active_investment} BTC
+    #                 Your active reinvestments is {active_reinvestment} BTC
+    #                 Your pending investments is {pending_investment} BTC
+    #     """,
+
+    #     "ITALIAN": f"""
+    #     Il saldo del tuo account è {balance} BTC
+    #     I tuoi investimenti attivi sono {active_investment} BTC
+    #     I tuoi reinvestimenti attivi sono {active_reinvestment} BTC
+    #     I tuoi investimenti in sospeso sono {pending_investment} BTC
+
+
+    #     """
+    # },
+
+    # "no_balance_text": {
+    #     "ENGLISH": f"""
+    #         No investment yet. Go to Deposit to add funds.
+    #     """,
+    #     "ITALIAN": f"""
+    #         Ancora nessun investimento. Andate a Deposito per aggiungere fondi.
+    #     """
+    # }
+
 }
 
 
