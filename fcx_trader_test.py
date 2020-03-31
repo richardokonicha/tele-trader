@@ -17,11 +17,11 @@ def getMessage():
 
 @server.route('/')
 def webhook():
-    url="https://6d92275c.ngrok.io/"
     url='https://fcx-bot.herokuapp.com/'
+    url="https://6d92275c.ngrok.io/"
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
-    return f"Webhook set to {url}/mytoken"
+    return f"Webhook set to {url}mytoken"
 
 # handlers.bot.polling()
 
