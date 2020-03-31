@@ -9,7 +9,7 @@ from functions import database, first_name, get_add_user, get_user, set_lang
 
 
 # TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
-TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ"
+TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
 
 
 bot = telebot.TeleBot(TOKEN)
