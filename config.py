@@ -9,7 +9,8 @@ from functions import database, first_name, get_add_user, get_user, set_lang
 
 
 # TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
-TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
+# TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
+TOKEN = "1137661512:AAEig943WBK2aCBhlrDxgpN6Tl__lpxOMUY" #FCX trader
 
 
 bot = telebot.TeleBot(TOKEN)
@@ -23,14 +24,14 @@ keys = types.ReplyKeyboardMarkup()
 
 
 select_lang_markup = [
-    ["ENGLISH", "ITALIAN"]
+    ["English  🇬🇧", "Italian  🇮🇹"]
 ]
 
 fcx_markup = [
     ["Balances BTC"],
-    ["Deposit", "Withdrawal"],
-    ["Reinvest", "Transactions"],
-    ["Team", "Language", "Support"]
+    ["🏦 Deposit", "🏧 Withdrawal"],
+    ["💵 Reinvest", "📜 Transactions"],
+    ["⛳ Team", "🇬🇧 Language", "🤝 Support"]
     ]
 ######### keyboard markup above here #######
 

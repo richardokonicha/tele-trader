@@ -26,12 +26,12 @@
     "lang": "ENGLISH",
     "registered_date": "2020-03-29T20:27:33.668953",
     "is_new_user": false,
-    "last_visited": "2020-03-30T17:17:27.074194",
+    "last_visited": "2020-03-31T14:57:16.653023",
     "investment": {
-      "balance": 900,
-      "active_investment": 300,
-      "active_reinvestment": 200,
-      "pending_investment": 100
+      "balance": 0.078,
+      "active_investment": 0.005,
+      "active_reinvestment": 0.0004,
+      "pending_investment": 0.0003
     }
   },
   "494974418": {

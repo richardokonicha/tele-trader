@@ -66,8 +66,8 @@ def start(message):
 def show_language(message):
     chat_id = message.chat.id
     select_prefered_lang = """
-        Select your prefered language
-        Seleziona la tua lingua preferita
+Please select your language
+Seleziona la tua lingua preferita
     """
     bot.send_message(
             chat_id,
@@ -81,19 +81,18 @@ def show_language(message):
 
 ############################ language setter starts here ###################
 @bot.message_handler(
-    func=lambda message: message.content_type == 'text' and 
-    message.text in ['ENGLISH', 'ITALIAN']
+    func=lambda message: message.text.split()[0] in ["English", "Italian"]
+    # message.content_type == 'text' and 
     )
 def set_langauge(message):
     """sets language and returns language value and send user confirmation message"""
     chat_id = message.chat.id
     user_object = get_user(message)
-    language = set_lang(user_object["user_id"], message.text)
+    message_lang = message.text.split()[0].upper()
+    language = set_lang(user_object["user_id"], message_lang)
     set_lang_text = {
-        "ENGLISH": """Your language has been set to ENGLISH
-        you can change this anytime by going to setting from the main menu""",
-        "ITALIAN": """La tua lingua è stata impostata su INGLESE,
-                puoi cambiarla in qualsiasi momento andando all'impostazione dal menu principale"""
+        "ENGLISH": """Language is set to: English 🇬🇧""",
+        "ITALIAN": """La lingua è impostata su: Italian 🇮🇹"""
     }
     bot.send_message(
         chat_id,
@@ -125,29 +124,45 @@ def balances(message):
             active_investment = user_object["investment"]['active_investment']
             active_reinvestment = user_object["investment"]['active_reinvestment']
             pending_investment = user_object["investment"]['pending_investment']
-
+            
+            
             balance_text = {
 
             "ENGLISH": f"""
-                <b>Your account balance is <strong>{balance}</strong> BTC</b>
 
-    Your active investments is <strong>{active_investment}</strong> BTC
 
-    Your active reinvestments is <strong>{active_reinvestment}</strong> BTC
+Your Account Balance:
+<strong>{balance} BTC</strong>
+Total Active Investments:
+<strong>{active_investment} BTC</strong>
+Total Active Reinvestments:
+<strong>{active_reinvestment} BTC</strong>
+Total Pending Investments:
+<strong>{pending_investment} BTC</strong>
 
-    Your pending investments is <strong>{pending_investment}</strong> BTC
+
+Base rate: 0.2% per day.
+You may add another investment by pressing the <strong>DEPOSIT</strong> button. Your Balance will be grow up according Base rate and your Referrals.
             """,
 
             "ITALIAN": f"""
-    <b>Il saldo del tuo account è <strong>{balance}</strong> BTC</b>
 
-    I tuoi investimenti attivi sono <strong>{active_investment}</strong> BTC
 
-    I tuoi reinvestimenti attivi sono <strong>{active_reinvestment}</strong> BTC
+Saldo del conto:
+<strong>{balance} BTC</strong>
+Investimenti attivi:
+<strong>{active_investment} BTC</strong>
+Reinvestimenti attivi:
+<strong>{active_reinvestment} BTC</strong>
+Investimenti in sospeso:
+<strong>{pending_investment} BTC</strong>
 
-    I tuoi investimenti in sospeso sono <strong>{pending_investment}</strong> BTC
 
-            """
+Tariffa base: 0,2% al giorno.
+È possibile aggiungere un altro investimento premendo il pulsante <strong>DEPOSIT</strong>. Il tuo saldo crescerà in base alla tariffa base e ai tuoi referral.        
+
+
+ """
             }
             bot.send_message(chat_id, text=balance_text[lang], reply_markup=home_keys, parse_mode="html")
         except KeyError:
