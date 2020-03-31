@@ -1,7 +1,7 @@
 from config import *
 
 
-
+############################### Start hander starts here ########################
 @bot.message_handler(commands=["start"])
 def start(message):
     """this is the starting point, it checks if user is not registered 
@@ -10,21 +10,54 @@ def start(message):
     user_object = get_add_user(message)
     
     if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
-        bot.send_message(
-            chat_id,
-            text=responses["select_prefered_lang"],
-            reply_markup=lang_keys,
-            parse_mode="HTML"
-            )
+        show_language(message)
     else:
+        ####################################################################
+        ####### Here is the welcome text users get each time they press start
+        welcome_text = {
+
+            "ENGLISH": """
+                            <b>Welcome to FCX Trading Bot</b>
+
+                    FCX Trading Bot is one of the most innovative Crypto and Forex trading providers.
+
+                    Successful traders, now allow access to the financial world not only for big investors but also for the average person. 
+                    With the simplified interface of the FCX Trading Bot, investing has never been
+                    this easy to handle.
+
+                    FCX Trading Bot profits depends on the global market situation and there is no guarantee of a fixed percentage of interest.
+                    Our strategy is to generate profits at the lowest possible risk.
+
+                    Deposits are being handled at the highest security level according
+                    to a modern portfolio management serving the FCX Trading Bot.
+                                    """,
+
+
+            "ITALIAN": """
+                            <b>Benvenuti a FCX Trading Bot </b>
+
+                    FCX Trading Bot è uno dei più innovativi fornitori di Crypto e Forex trading. I trader di successo ora permettono l'accesso 
+                    al mondo finanziario non solo ai grandi investitori ma anche alla persona media. Con l'interfaccia semplificata del FCX Trading Bot 
+                    l'investimento non è mai stato così facile da gestire.
+
+                    I profitti del FCX Trading Bot dipendono dalla situazione del mercato globale e non c'è garanzia di una percentuale fissa di interessi.
+                    La nostra strategia è quella di generare profitti al minor rischio possibile.
+
+                    I depositi sono gestiti al più alto livello di sicurezza secondo una moderna gestione di portafoglio al servizio del Trading Bot FCM.
+
+                                    """
+            }
         bot.send_message(
             chat_id,
-            text=responses["welcome_text"][user_object["lang"]],
+            text=welcome_text[user_object["lang"]],
             reply_markup=home_keys,
             parse_mode="HTML"
             )
+############################### Start handler ends here ########################
 
-
+#
+#
+############################ language options starts here ###################
 @bot.message_handler(
     func=lambda message: message.content_type == "text"
     and bool(re.search('^language$', message.text, re.IGNORECASE))
@@ -32,15 +65,21 @@ def start(message):
 @bot.message_handler(commands=["language", "lang"])
 def show_language(message):
     chat_id = message.chat.id
-
+    select_prefered_lang = """
+        Select your prefered language
+        Seleziona la tua lingua preferita
+    """
     bot.send_message(
             chat_id,
-            text=responses["select_prefered_lang"],
+            text=select_prefered_lang,
             reply_markup=lang_keys,
             parse_mode="HTML"
             )
+############################ language options ends here ###################
 
 
+
+############################ language setter starts here ###################
 @bot.message_handler(
     func=lambda message: message.content_type == 'text' and 
     message.text in ['ENGLISH', 'ITALIAN']
@@ -50,12 +89,19 @@ def set_langauge(message):
     chat_id = message.chat.id
     user_object = get_user(message)
     language = set_lang(user_object["user_id"], message.text)
-    text=responses["set_lang_text"][language],
+    set_lang_text = {
+        "ENGLISH": """Your language has been set to ENGLISH
+        you can change this anytime by going to setting from the main menu""",
+        "ITALIAN": """La tua lingua è stata impostata su INGLESE,
+                puoi cambiarla in qualsiasi momento andando all'impostazione dal menu principale"""
+    }
     bot.send_message(
         chat_id,
-        text=text,
+        text=set_lang_text[language],
         reply_markup=home_keys
     )
+############################ language setter ends here ###################
+
 
 
 ############################### Balance button handler ###################333

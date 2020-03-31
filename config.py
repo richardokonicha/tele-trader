@@ -4,8 +4,6 @@ import re
 import telebot
 from telebot import types
 
-from core import *
-from core import select_lang_markup, fcx_markup
 from functions import database, first_name, get_add_user, get_user, set_lang
 
 
