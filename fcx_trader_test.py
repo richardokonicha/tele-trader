@@ -15,10 +15,16 @@ def getMessage():
     return "got Message bro"
 
 
+
+@server.route("/pay", methods=["POST"])
+def pay():
+    requests = request
+    pass
+
 @server.route('/')
 def webhook():
     url='https://fcx-bot.herokuapp.com/'
-    url="https://e96bb850.ngrok.io/"
+    url="https://0218d890.ngrok.io/"
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
