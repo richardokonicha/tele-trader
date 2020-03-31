@@ -109,6 +109,7 @@ def set_langauge(message):
     func=lambda message: message.content_type == 'text'
     and bool(re.search(r'^balance[s.]', message.text, re.IGNORECASE))
 )
+
 def balances(message):
     """Returns account balance report"""
     
@@ -186,7 +187,7 @@ Tariffa base: 0,2% al giorno.
 ########################################### Withdrawal handler starts here ######################
 @bot.message_handler(
     func=lambda message: message.content_type == 'text'
-    and bool(re.search(r'^withdrawal', message.text, re.IGNORECASE))
+    and bool(re.search(r'^withdrawal$', message.text.split()[1], re.IGNORECASE))
 )
 def withdrawal(message):
     chat_id = message.chat.id
@@ -242,7 +243,7 @@ Per favore inserire l’indirizzo del Vostro Wallet Bitcoin
 ############################## DEPOSIT handler starts here ########################3
 @bot.message_handler(
     func=lambda message: message.content_type == "text"
-    and bool(re.search(r'^deposit$', message.text, re.IGNORECASE))
+    and bool(re.search(r'^deposit$', message.text.split()[1], re.IGNORECASE))
 )
 def deposit(message):
     chat_id = message.chat.id
