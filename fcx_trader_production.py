@@ -21,9 +21,10 @@ def getMessage():
 
 @server.route("/")
 def webhook():
+    url='https://fcx-bot.herokuapp.com/'
     bot.remove_webhook()
-    bot.set_webhook(url='https://fcx-bot.herokuapp.com/' + TOKEN)
-    return "!webhook", 200
+    bot.set_webhook(url + TOKEN)
+    return "!webhook is set", 200
 
 
 if __name__ == "__main__":
