@@ -26,12 +26,19 @@
     "lang": "ENGLISH",
     "registered_date": "2020-03-29T20:27:33.668953",
     "is_new_user": false,
-    "last_visited": "2020-03-30T16:30:30.255740",
+    "last_visited": "2020-03-30T17:17:27.074194",
     "investment": {
       "balance": 900,
       "active_investment": 300,
       "active_reinvestment": 200,
       "pending_investment": 100
     }
+  },
+  "494974418": {
+    "user_id": "494974418",
+    "user": "Asso187",
+    "lang": " ",
+    "registered_date": "2020-03-30T16:58:35.687059",
+    "is_new_user": true
   }
 }
