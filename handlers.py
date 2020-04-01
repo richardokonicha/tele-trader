@@ -287,10 +287,10 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     payment_details = payment_client.get_callback_address(
         params={'currency': 'BTC'}
     )
-    try:
-        text = payment_details["result"].get("address", "nada")
-    except KeyError:
-        text = "Error occurred please contact by clicking the SUPPORT button"
+    # try:
+    #     text = payment_details["result"].get("address", "nada")
+    # except KeyError:
+    #     text = "Error occurred please contact by clicking the SUPPORT button"
     bot.send_message(
         chat_id, text=arrival_text.get(lang)
     )
