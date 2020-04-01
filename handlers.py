@@ -11,6 +11,8 @@ def start(message):
     if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
         show_language(message)
     else:
+        user_object = get_user(message)
+        lang = user_object["lang"]
         ####################################################################
         ####### Here is the welcome text users get each time they press start
         welcome_text = {
@@ -282,7 +284,9 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         parse_mode="html"
         )
     bot.send_chat_action(chat_id, action="typing")
-    payment_details = payment_client.get_callback_address(currency='BTC')
+    payment_details = payment_client.get_callback_address(
+        params={'currency': 'BTC'}
+    )
     try:
         text = payment_details["result"].get("address", "nada")
     except KeyError:
