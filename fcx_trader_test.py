@@ -4,6 +4,7 @@ import os
 import handlers
 from config import *
 
+
 server = Flask(__name__)
 
 
@@ -24,7 +25,7 @@ def pay():
 @server.route('/')
 def webhook():
     url='https://fcx-bot.herokuapp.com/'
-    url="https://0218d890.ngrok.io/"
+    url="https://076a69a6.ngrok.io/"
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
