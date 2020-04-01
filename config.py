@@ -7,7 +7,6 @@ from telebot import types
 from functions import database, first_name, get_add_user, get_user, set_lang
 # from coinpayments import CoinPaymentsAPI
 
-from coinpayment import CoinPayments
 
 
 # TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
@@ -24,7 +23,6 @@ ipn_url="https://0218d890.ngrok.io/pay"
 
 bot = telebot.TeleBot(TOKEN)
 
-payment_client = CoinPayments(PublicKey, PrivateKey)
 ######### keyboard markup below here #######
 
 from telebot import types

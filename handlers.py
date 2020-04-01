@@ -255,6 +255,9 @@ def deposit(message):
     user_object = get_user(message)
     balance = user_object["investment"]['balance']
     lang = user_object["lang"]
+    payment_details = payment_client.get_callback_address(
+        params={'currency': 'BTC'}
+    )
     wait_text = {
         "ENGLISH": """Please wait for our system to generate your New Deposit Address.""",
         "ITALIAN": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
@@ -287,11 +290,10 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         parse_mode="html"
         )
     bot.send_chat_action(chat_id, action="typing")
-    payment_details = payment_client.get_callback_address(
-        params={'currency': 'BTC'}
-    )
+    print(payment_details)
     # try:
-    text = payment_details["result"].get("address", "nada")
+    text = payment_details["result"]["address"]
+    print(text)
     # except KeyError:
     #     text = "Error occurred please contact by clicking the SUPPORT button"
     # text = "Error occurred please contact by clicking the SUPPORT button"
