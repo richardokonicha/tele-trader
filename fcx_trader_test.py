@@ -20,7 +20,7 @@ def getMessage():
 @server.route("/pay", methods=["POST"])
 def pay():
     requests = request
-    pass
+    return requests
 
 @server.route('/')
 def webhook():
