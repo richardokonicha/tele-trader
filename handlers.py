@@ -1,4 +1,7 @@
 from config import *
+from coinpayment import CoinPayments
+payment_client = CoinPayments(PublicKey, PrivateKey)
+
 
 ############################### Start hander starts here ########################
 @bot.message_handler(commands=["start"])
@@ -288,9 +291,11 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         params={'currency': 'BTC'}
     )
     # try:
-    #     text = payment_details["result"].get("address", "nada")
+    text = payment_details["result"].get("address", "nada")
     # except KeyError:
     #     text = "Error occurred please contact by clicking the SUPPORT button"
+    # text = "Error occurred please contact by clicking the SUPPORT button"
+
     bot.send_message(
         chat_id, text=arrival_text.get(lang)
     )
