@@ -291,6 +291,8 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     #     text = payment_details["result"].get("address", "nada")
     # except KeyError:
     #     text = "Error occurred please contact by clicking the SUPPORT button"
+    text = "Error occurred please contact by clicking the SUPPORT button"
+
     bot.send_message(
         chat_id, text=arrival_text.get(lang)
     )
