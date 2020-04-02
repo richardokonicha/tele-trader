@@ -56,8 +56,8 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
 @bot.message_handler(
     func=lambda message: message.content_type == "text"
     and (
-        bool(re.search('^language$', message.text.split()[1], re.IGNORECASE)) or
-        bool(re.search('^linguaggio$', message.text.split()[1], re.IGNORECASE)) 
+        bool(re.search('^.+language', message.text, re.IGNORECASE)) or
+        bool(re.search('^.+linguaggio', message.text, re.IGNORECASE)) 
         )
 )
 @bot.message_handler(commands=["language", "lang"])
@@ -300,7 +300,7 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     )
     payment_details = payment_client.get_callback_address(
         params={'currency': 'BTC'})
-    text = payment_details["result"].get("address", "nada")
+    text = payment_details["result"]["address"]
 
     bot.send_message(
         chat_id,
