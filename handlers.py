@@ -233,7 +233,7 @@ Per favore inserire l’indirizzo del Vostro Wallet Bitcoin
             chat_id, text=text_info[lang] + text_enter_address[lang],
             reply_markup=dashboard.get(lang), parse_mode="html"
             )
-        
+
 
 
 ############################### Withdrawal handler ends here #######################33
@@ -255,9 +255,8 @@ def deposit(message):
     user_object = get_user(message)
     balance = user_object["investment"]['balance']
     lang = user_object["lang"]
-    payment_details = payment_client.get_callback_address(
-        params={'currency': 'BTC'}
-    )
+    
+
     wait_text = {
         "ENGLISH": """Please wait for our system to generate your New Deposit Address.""",
         "ITALIAN": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
@@ -290,10 +289,8 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         parse_mode="html"
         )
     bot.send_chat_action(chat_id, action="typing")
-    print(payment_details)
+   
     # try:
-    text = payment_details["result"]["address"]
-    print(text)
     # except KeyError:
     #     text = "Error occurred please contact by clicking the SUPPORT button"
     # text = "Error occurred please contact by clicking the SUPPORT button"
@@ -301,6 +298,10 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     bot.send_message(
         chat_id, text=arrival_text.get(lang)
     )
+    payment_details = payment_client.get_callback_address(
+        params={'currency': 'BTC'})
+    text = payment_details["result"].get("address", "nada")
+
     bot.send_message(
         chat_id,
         text=f"<strong>{text}</strong>",
@@ -311,3 +312,275 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         text=duration_text.get(lang),
         reply_markup=dashboard.get(lang)
     )
+    
+#########################DEPOSIT HANDLER ENDS HERE ###########
+
+
+
+
+
+
+
+
+########################################### Reinvest handler starts here ######################
+@bot.message_handler(
+    func=lambda message: message.content_type == 'text'
+    and ( 
+        bool(re.search(r'^Reinvest$', message.text.split()[1], re.IGNORECASE))
+        #  or  bool(re.search(r'^Ritiro$', message.text.split()[1], re.IGNORECASE))
+        )
+)
+def reinvest(message):
+    chat_id = message.chat.id
+    user_object = get_user(message)
+    balance = user_object["investment"]['balance']
+    lang = user_object["lang"]
+    withdrawal_minimum_amount = 0.002
+    text_info = {
+        "ENGLISH": f"""
+You can make a reinvest any time, depending on your account balance . 
+Minimum amount to reinvest is 0.002 BTC. Once credited, each reinvestment counts for itself and runs for 180 days.
+        """,
+        "ITALIAN": f"""
+Potete effettuare un reinvestimento in qualsiasi momento, a seconda del saldo del Vostro conto. L'importo minimo da reinvestire è di 0,002 BTC. Una volta accreditato, ogni reinvestimento vale per se stesso e dura 180 giorni.
+        """
+        }
+    text_insufficient = {
+        "ENGLISH": """
+You don't have enough funds to create a reinvest
+        """,
+        "ITALIAN": """
+Non avete abbastanza fondi per creare un reinvestimento. 
+        """
+    }
+    text_enter_amount = {
+        "ENGLISH": """
+Please enter the amount to reinvest:
+        """,
+        "ITALIAN": """
+Per favore inserire l'importo da reinvestire:
+        """
+    }
+    if balance < withdrawal_minimum_amount:
+        bot.send_message(
+            chat_id, text=text_info[lang] + text_insufficient[lang],
+            reply_markup=home_keys, parse_mode="html"
+            )
+    else:
+        bot.send_message(
+            chat_id, text=text_info[lang] + text_enter_amount[lang],
+            reply_markup=dashboard.get(lang), parse_mode="html"
+            )
+
+
+
+############################### REinvest handler ends here #######################33
+
+
+
+
+########################################### Team handler starts here ######################
+@bot.message_handler(
+    func=lambda message: message.content_type == 'text'
+    and ( 
+        bool(re.search(r'^Team$', message.text.split()[1], re.IGNORECASE))
+         or  bool(re.search(r'^Squadra$', message.text.split()[1], re.IGNORECASE))
+        )
+)
+def Team(message):
+    chat_id = message.chat.id
+    user_object = get_user(message)
+    balance = user_object["investment"]['balance']
+    lang = user_object["lang"]
+    withdrawal_minimum_amount = 0.002
+    text_info = {
+        "ENGLISH": f"""
+Invitation link to share with your friends:
+        """,
+        "ITALIAN": f"""
+Link di invito da condividere con i Vostri amici:
+        """
+        }
+        
+    text_refferal = {
+        "ENGLISH": """
+
+Refferal system:
+1. Level 5%
+2. Level 3%
+3. Level 1%
+
+Team:
+1. Level partner: 10
+2. Level partner:  5
+3. Level partner:  2
+
+Team volume:
+1. Level: 1.000000 BTC
+2. Level  0.557777 BTC
+3. Level  0.236675 BTC
+
+Total team earnings:
+xx.xxxxxx BTC
+
+
+        """,
+        "ITALIAN": """
+
+Livelli Bonus:
+1. Livello 5%
+2. Livello 3%
+3. Livello 1%
+
+Team:
+1. Partner di livello: 10
+2. Partner di livello: 5
+3. Partner di livello: 2
+
+Totale della squadra:
+1. Livello: 1.000000 BTC
+2. Livello 0,557777 BTC
+3. Livello 0,236675 BTC
+
+
+Guadagno totale della squadra:
+xx.xxxxxx BTC
+        """
+    }
+    text_enter_commission = {
+        "ENGLISH": """
+Your commissions will be added automatically to your main account balance each time a team member makes a deposit or a reinvestment.
+        """,
+        "ITALIAN": """
+Le Vostre commissioni saranno aggiunte automaticamente al saldo del Vostro conto principale ogni volta che un membro del team effettua un deposito o un reinvestimento. 
+        """
+    }
+    bot.send_message( chat_id, text=text_info[lang] + text_refferal[lang] + text_enter_commission[lang],
+        reply_markup=dashboard.get(lang), parse_mode="html"
+        )
+
+
+
+############################### Team handler ends here #######################33
+
+
+
+
+
+########################################### Transaction handler starts here ######################
+@bot.message_handler(
+    func=lambda message: message.content_type == 'text'
+    and ( 
+        bool(re.search(r'^Transactions$', message.text.split()[1], re.IGNORECASE))
+         or  bool(re.search(r'^Transazioni$', message.text.split()[1], re.IGNORECASE))
+        )
+)
+def Transaction(message):
+    chat_id = message.chat.id
+    user_object = get_user(message)
+    balance = user_object["investment"]['balance']
+    lang = user_object["lang"]
+    text_info = {
+        "ENGLISH": f"""
+
+Deposits:
+.....
+30/03/2020 0.022111 BTC 
+23/03/2020 0.500000 BTC     
+
+
+Payouts:
+.....
+30/04/2020 0.022111 BTC 
+27/03/2020 0.500000 BTC
+
+
+Reinvestments:
+......
+15/07/2020 0.500000 BTC
+15/06/2020 0.022111 BTC
+
+Commissions:
+.....
+17/08/2020 0.500000 BTC
+08/06/2020 0.022111 BTC
+
+        """,
+        "ITALIAN": f"""
+Depositi:
+.....
+30/03/2020 0,022111 BTC   
+23/03/2020 0.500000 BTC 
+
+Pagamenti:
+.....
+30/04/2020 0,022111 BTC
+27/03/2020 0.500000 BTC
+
+Reinvestimenti:
+......
+15/07/2020 0,500000 BTC
+15/06/2020 0,022111 BTC
+
+Commissioni:
+.....
+17/08/2020 0,500000 BTC
+08/06/2020 0.022111 BTC 
+
+
+        """
+        }
+
+
+    bot.send_message(
+        chat_id, text=text_info[lang],
+        reply_markup=dashboard.get(lang), parse_mode="html"
+        )
+
+
+
+############################### Transaction handler ends here #######################33
+
+
+
+
+
+
+########################################### Support handler starts here ######################
+@bot.message_handler(
+    func=lambda message: message.content_type == 'text'
+    and ( 
+        bool(re.search(r'^Support$', message.text.split()[1], re.IGNORECASE))
+         or  bool(re.search(r'^Supporto$', message.text.split()[1], re.IGNORECASE))
+        )
+)
+def Support(message):
+    chat_id = message.chat.id
+    user_object = get_user(message)
+    balance = user_object["investment"]['balance']
+    lang = user_object["lang"]
+    text_info = {
+        "ENGLISH": f"""
+Contact:
+@fcx_bot
+        """,
+        "ITALIAN": f"""
+Contatto:
+@fcx_bot
+
+        """
+        }
+
+    bot.send_message(
+        chat_id, text=text_info[lang],
+        reply_markup=dashboard.get(lang), parse_mode="html"
+        )
+
+
+
+############################### Support handler ends here #######################33
+
+
+
+
+

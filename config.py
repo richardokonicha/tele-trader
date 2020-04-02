@@ -38,7 +38,7 @@ fcx_markup = {
 
 "ENGLISH": [
     ["Balances BTC"],
-    ["🏦 Deposit", "🏧 Withd    rawal"],
+    ["🏦 Deposit", "🏧 Withdrawal"],
     ["💵 Reinvest", "📜 Transactions"],
     ["⛳ Team", "🇬🇧 Language", "🤝 Support"]
     ],
