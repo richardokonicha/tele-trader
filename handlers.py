@@ -301,25 +301,31 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     payment_details = payment_client.get_callback_address(
         params={'currency': 'BTC'})
 
-    print(payment_details)
-    print(payment_details["result"])
-    import pdb; pdb.set_trace()
-    text = payment_details["result"]["address"]
-    tex = payment_details["result"]
-    print(tex)
+    try:
 
+        text = payment_details["result"]["address"]
 
-    bot.send_message(
-        chat_id,
-        text=f"<strong>{text}{tex}</strong>",
+        bot.send_message(
+            chat_id,
+            text=f"<strong>{text}</strong>",
+            parse_mode="html"
+        )
+        bot.send_message(
+            chat_id,
+            text=duration_text.get(lang),
+            reply_markup=dashboard.get(lang)
+        )
+    
+    except TypeError:
+        text = payment_details["error"]
+        bot.send_message(
+        1053579181,
+        text=f"<strong>{text} for fcx server</strong>",
         parse_mode="html"
     )
-    bot.send_message(
-        chat_id,
-        text=duration_text.get(lang),
-        reply_markup=dashboard.get(lang)
-    )
-    
+
+
+
 #########################DEPOSIT HANDLER ENDS HERE ###########
 
 
