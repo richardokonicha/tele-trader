@@ -300,11 +300,18 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     )
     payment_details = payment_client.get_callback_address(
         params={'currency': 'BTC'})
+
+    print(payment_details)
+    print(payment_details["result"])
+    import pdb; pdb.set_trace()
     text = payment_details["result"]["address"]
+    tex = payment_details["result"]
+    print(tex)
+
 
     bot.send_message(
         chat_id,
-        text=f"<strong>{text}</strong>",
+        text=f"<strong>{text}{tex}</strong>",
         parse_mode="html"
     )
     bot.send_message(
