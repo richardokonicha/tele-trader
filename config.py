@@ -1,17 +1,13 @@
 import json
 import re
-
 import telebot
 from telebot import types
+from functions import *
+from coinpayment import CoinPayments
 
-from functions import database, first_name, get_add_user, get_user, set_lang
-# from coinpayments import CoinPaymentsAPI
-
-
-
-# TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
+TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-TOKEN = "1137661512:AAEig943WBK2aCBhlrDxgpN6Tl__lpxOMUY" #FCX trading bot
+# TOKEN = "1137661512:AAEig943WBK2aCBhlrDxgpN6Tl__lpxOMUY" #FCX trading bot
 
 
 # # Key Name: Unnamed API Key
@@ -21,13 +17,19 @@ ipn_url="https://0218d890.ngrok.io/pay"
 
 
 
-bot = telebot.TeleBot(TOKEN)
+# bot = telebot.TeleBot(TOKEN, threaded=True)
+bot = telebot.AsyncTeleBot(TOKEN, threaded=True)
+
+payment_client = CoinPayments(PublicKey, PrivateKey)
+
 
 ######### keyboard markup below here #######
 
 from telebot import types
 keys = types.ReplyKeyboardMarkup()
 
+
+force_r = types.ForceReply()
 
 select_lang_markup = [
     ["English  🇬🇧", "Italian  🇮🇹"]
@@ -76,3 +78,5 @@ lang_keys = types.ReplyKeyboardMarkup(
 lang_keys.keyboard = select_lang_markup
 ########## keyboard layout defination ends #
 
+import importdir
+importdir.do("features", globals())

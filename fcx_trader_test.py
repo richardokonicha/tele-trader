@@ -1,7 +1,5 @@
-
 from flask import Flask, request
 import os
-import handlers
 from config import *
 
 
@@ -25,12 +23,13 @@ def pay():
 @server.route('/')
 def webhook():
     url='https://fcx-bot.herokuapp.com/'
-    url="https://1e10cf68.ngrok.io/"
+    url="https://28d3a6d7.ngrok.io/"
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
 
-# handlers.bot.polling()
+# bot.remove_webhook()
+# bot.polling()
 
 if __name__ == "__main__":
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
