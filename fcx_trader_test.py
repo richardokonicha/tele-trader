@@ -23,7 +23,7 @@ def pay():
 @server.route('/')
 def webhook():
     url='https://fcx-bot.herokuapp.com/'
-    url="https://28d3a6d7.ngrok.io/"
+    url="https://d0f0fdc3.ngrok.io/"
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"

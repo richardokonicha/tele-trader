@@ -26,12 +26,15 @@
     "lang": "ENGLISH",
     "registered_date": "2020-03-29T20:27:33.668953",
     "is_new_user": false,
-    "last_visited": "2020-04-03T20:51:11.887674",
+    "last_visited": "2020-04-04T11:28:21.565063",
     "investment": {
       "balance": 0.078,
       "active_investment": 0.005,
       "active_reinvestment": 0.0004,
       "pending_investment": 0.0003
+    },
+    "Withdrawals": {
+      "wallet_address": "fxfxjxfcghcjcgjccgjcgcgjc"
     }
   },
   "494974418": {

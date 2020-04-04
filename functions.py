@@ -8,10 +8,32 @@ database = "database/database.json"
 # functions to modify user_id fields on json
 # examples lang("Uche", "russian")  first_name("Richard", 'Reechee lake')
 
+
+
+
+def update_user(user, data):
+    with open(database, 'r', encoding='utf-8') as file:
+        file_json = json.load(file)
+    file_json.get(user).update(data)
+    with open(database, 'w', encoding='utf-8') as file_wr:
+        json.dump(file_json, file_wr, indent=2)
+    return file_json[user]
+    
+    
+
 def get_user(message):
     with open(database, 'r', encoding='utf-8') as file:
         file_json = json.load(file)
     user_info = message.json['from']
+    id = str(user_info["id"])
+    return file_json[id]
+
+
+
+def get_user_from_call(message):
+    with open(database, 'r', encoding='utf-8') as file:
+        file_json = json.load(file)
+    user_info = message.json['chat']
     id = str(user_info["id"])
     return file_json[id]
 
