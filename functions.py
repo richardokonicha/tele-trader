@@ -3,7 +3,7 @@ import datetime
 import json
 from email import message
 
-database = "database.json"
+database = "database/database.json"
 ##########################
 # functions to modify user_id fields on json
 # examples lang("Uche", "russian")  first_name("Richard", 'Reechee lake')
@@ -67,3 +67,4 @@ def first_name(user_id, name):
     with open(database, 'w', encoding='utf-8') as file_wr:
         json.dump(file_json, file_wr, indent=2)
     return name
+
