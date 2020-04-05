@@ -26,7 +26,7 @@
     "lang": "ENGLISH",
     "registered_date": "2020-03-29T20:27:33.668953",
     "is_new_user": false,
-    "last_visited": "2020-04-04T11:28:21.565063",
+    "last_visited": "2020-04-05T02:18:03.869401",
     "investment": {
       "balance": 0.078,
       "active_investment": 0.005,
@@ -34,22 +34,12 @@
       "pending_investment": 0.0003
     },
     "Withdrawals": {
-      "wallet_address": "fxfxjxfcghcjcgjccgjcgcgjc"
-    }
-  },
-  "494974418": {
-    "user_id": "494974418",
-    "user": "Asso187",
-    "lang": " ",
-    "registered_date": "2020-03-30T16:58:35.687059",
-    "is_new_user": true
-  },
-  "1018161083": {
-    "user_id": "1018161083",
-    "user": "Apex Investments",
-    "lang": "ENGLISH",
-    "registered_date": "2020-04-01T12:54:11.519032",
-    "is_new_user": false,
-    "last_visited": "2020-04-01T12:54:40.629607"
+      "withdrawal_request": {
+        "withdrawal_request": 0.03,
+        "status": "unconfirmed"
+      }
+    },
+    "wallet_address": "uhfdjhaldhaljhdfjhlkdjfd",
+    "withdrawal_request_confirmation": "Yes"
   }
 }
