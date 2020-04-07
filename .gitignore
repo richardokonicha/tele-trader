@@ -8,3 +8,4 @@ __pycache__
 settings.py
 database/database.json
 database/database.json
+extras/test.http

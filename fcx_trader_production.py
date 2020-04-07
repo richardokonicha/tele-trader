@@ -1,7 +1,7 @@
 
 from flask import Flask, request
 import os
-import handlers
+# import handlers
 from config import *
 
 
