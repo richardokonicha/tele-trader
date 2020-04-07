@@ -6,3 +6,5 @@ __pycache__[*]+.pyc
 core.py
 __pycache__
 settings.py
+database/database.json
+database/database.json

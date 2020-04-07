@@ -35,7 +35,7 @@
     },
     "Withdrawals": {
       "withdrawal_request": {
-        "withdrawal_request": 0.03,
+        "withdrawal_request": 0.02,
         "status": "unconfirmed"
       }
     },
