@@ -24,6 +24,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
     name = Column(String, nullable=False)
     language = Column(String)
     registered_date = Column(String)
@@ -48,7 +49,14 @@ class User(Base):
 
 
     def exists(self):
-        return session.query(exists().where(User.id == self.id)).scalar()
+        return session.query(exists().where(User.user_id == self.user_id)).scalar()
+
+    @classmethod
+    def get_user(cls, user_id):
+        if session.query(exists().where(cls.user_id == user_id)).scalar():
+            return session.query(cls).filter_by(user_id=user_id).first()
+        else:
+            return None
 
 
     def set_last_visted(self):

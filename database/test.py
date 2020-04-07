@@ -3,7 +3,7 @@ import database as db
 
 
 #%%
-
+# engine.execute('alter table table_name add column column_name String')
 
 user_id = 2122
 name = 'Johnathan'

@@ -1,7 +1,5 @@
 
 from config import *
-import sys
-import database as dba
 
 @bot.message_handler(commands=["start"])
 def start(message):
@@ -11,24 +9,18 @@ def start(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
 
-    fcx_user = db.User(
-        name=name,
-        user_id=user_id
-    )
-
+    # user_object = get_add_user(message)
     
-    user_object = get_add_user(message)
-    
-    if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
-        show_language(message)
-    else:
-        user_object = get_user(message)
-        lang = user_object["lang"]
+    # if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
+    #     show_language(message)
+    # else:
+    #     user_object = get_user(message)
+    #     lang = user_object["lang"]
         ####################################################################
         ####### Here is the welcome text users get each time they press start
-        welcome_text = {
+    welcome_text = {
 
-            "ENGLISH": """
+            "en": """
                             <b>Welcome to FCX Trading Bot</b>
 
 FCX Trading Bot is one of the most innovative Crypto and Forex trading providers. Successful traders, now allow access to the financial world not only for big investors but also for the average person. With the simplified interface of the FCX Trading Bot, investing has never been this easy to handle.
@@ -39,7 +31,7 @@ Deposits are being handled at the highest security level according to a modern p
                                     """,
 
 
-            "ITALIAN": """
+            "it": """
                             <b>Benvenuti a FCX Trading Bot </b>
 
 FCX Trading Bot è uno dei più innovativi fornitori di Crypto e Forex trading. I trader di successo ora permettono l'accesso al mondo finanziario non solo ai grandi investitori ma anche alla persona media. Con l'interfaccia semplificata del FCX Trading Bot l'investimento non è mai stato così facile da gestire.
@@ -48,11 +40,37 @@ I profitti del FCX Trading Bot dipendono dalla situazione del mercato globale e 
 
 I depositi sono gestiti al più alto livello di sicurezza secondo una moderna gestione di portafoglio al servizio del Trading Bot FCM.
 
-                                    """
+                                """
             }
+
+    fcx_user = db.User.get_user(user_id)
+
+    if fcx_user is not None:
+        lang = fcx_user.language
+        if lang == None or lang not in ['en', 'it']:
+            show_languages.show_language(message)
+            fcx_user.commit()
+        else:
+            bot.send_message(
+                chat_id,
+                text=welcome_text[lang],
+                reply_markup=dashboard[lang],
+                parse_mode="HTML"
+                )
+            
+
+    else:
+        fcx_user = db.User(
+            name=name,
+            user_id=user_id
+        )
+        show_languages.show_language(message)
+        lang = fcx_user.language
+        fcx_user.commit()
+
         bot.send_message(
             chat_id,
-            text=welcome_text[user_object["lang"]],
+            text=welcome_text[lang],
             reply_markup=dashboard[lang],
             parse_mode="HTML"
             )

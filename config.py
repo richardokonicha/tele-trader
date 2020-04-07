@@ -8,22 +8,12 @@ from datetime import datetime
 
 from database import database as db
 
-TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
-# TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-# TOKEN = "1137661512:AAEig943WBK2aCBhlrDxgpN6Tl__lpxOMUY" #FCX trading bot
-
-
-# # Key Name: Unnamed API Key
-PublicKey = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
-PrivateKey = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
-ipn_url="https://0218d890.ngrok.io/pay"
-
-
+from settings import TOKEN, PRIVATE_KEY, PUBLIC_KEY
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
 bot = telebot.TeleBot(TOKEN, threaded=True)
 
-payment_client = CoinPayments(PublicKey, PrivateKey)
+payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY)
 
 
 ######### keyboard markup below here #######
@@ -41,14 +31,14 @@ select_lang_markup = [
 
 fcx_markup = {
 
-"ENGLISH": [
+"en": [
     ["Balances BTC"],
     ["🏦 Deposit", "🏧 Withdrawal"],
     ["💵 Reinvest", "📜 Transactions"],
     ["⛳ Team", "🇬🇧 Language", "🤝 Support"]
     ],
     
-"ITALIAN": [
+"it": [
     ["Bilance BTC"],
     ["🏦 Depositare", "🏧 Ritiro"],
     ["💵 Reinvest", "📜 Transazioni"],
@@ -63,13 +53,13 @@ fcx_markup = {
 ########## keyboard layout defination ######3
 en_home_keys = types.ReplyKeyboardMarkup()
 it_home_keys = types.ReplyKeyboardMarkup()
-en_home_keys.keyboard = fcx_markup.get("ENGLISH")
-it_home_keys.keyboard = fcx_markup.get("ITALIAN")
+en_home_keys.keyboard = fcx_markup.get("en")
+it_home_keys.keyboard = fcx_markup.get("it")
 
 
 dashboard = {
-    "ENGLISH": en_home_keys,
-    "ITALIAN": it_home_keys
+    "en": en_home_keys,
+    "it": it_home_keys
 }
 
 lang_keys = types.ReplyKeyboardMarkup(
