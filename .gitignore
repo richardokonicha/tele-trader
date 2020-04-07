@@ -5,3 +5,4 @@ alchemy.py
 __pycache__[*]+.pyc
 core.py
 __pycache__
+settings.py
