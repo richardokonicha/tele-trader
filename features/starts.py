@@ -1,11 +1,22 @@
 
 from config import *
+import sys
+import database as dba
 
 @bot.message_handler(commands=["start"])
 def start(message):
     """this is the starting point, it checks if user is not registered 
     and renders lang settings if user is registered uses pervious lang """
     chat_id = message.chat.id
+    user_id = message.from_user.id
+    name = message.from_user.first_name
+
+    fcx_user = db.User(
+        name=name,
+        user_id=user_id
+    )
+
+    
     user_object = get_add_user(message)
     
     if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
