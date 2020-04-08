@@ -12,22 +12,37 @@ def balance(message):
     """Returns account balance report"""
     
     chat_id = message.chat.id
-    user_object = get_user(message)
-    if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    if fcx_user.language not in ["en", "it"]:
         show_language(message)
     else:
-        lang = user_object["lang"]
+        lang = fcx_user.language
+
+
+
+    # user_object = get_user(message)
+    # if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
+    #     show_language(message)
+    # else:
+    #     lang = user_object["lang"]
 
         try:
-            balance = user_object["investment"]['balance']
-            active_investment = user_object["investment"]['active_investment']
-            active_reinvestment = user_object["investment"]['active_reinvestment']
-            pending_investment = user_object["investment"]['pending_investment']
+            balance = fcx_user.account_balance
+            active_investment = fcx_user.active_investment
+            active_reinvestment = fcx_user.active_reinvestment
+            pending_investment = fcx_user.pending_investment
+
+
+            # balance = user_object["investment"]['balance']
+            # active_investment = user_object["investment"]['active_investment']
+            # active_reinvestment = user_object["investment"]['active_reinvestment']
+            # pending_investment = user_object["investment"]['pending_investment']
             
             
             balance_text = {
 
-            "ENGLISH": f"""
+            "en": f"""
 
 
 Your Account Balance:
@@ -43,7 +58,7 @@ Base rate: 0.2% per day.
 You may add another investment by pressing the <strong>DEPOSIT</strong> button. Your Balance will be grow up according Base rate and your Referrals.
             """,
 
-            "ITALIAN": f"""
+            "it": f"""
 
 
 Saldo del conto:
@@ -64,10 +79,10 @@ Tariffa base: 0,2% al giorno.
             bot.send_message(chat_id, text=balance_text[lang], reply_markup=dashboard.get(lang), parse_mode="html")
         except KeyError:
             no_balance_text = {
-                "ENGLISH": f"""
+                "en": f"""
                     No investment yet. Go to <b>Deposit</b> to add funds.
                 """,
-                "ITALIAN": f"""
+                "it": f"""
                     Ancora nessun investimento. Andate a Deposito per aggiungere fondi.
                 """
                 }
