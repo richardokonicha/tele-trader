@@ -1,18 +1,19 @@
 
 from flask import Flask, request
 import os
+# import handlers
 from config import *
 
 
 server = Flask(__name__)
 
 
-@server.route('/'+ TOKEN_PRODUCTION, methods=['POST'])
+@server.route('/'+ TOKEN, methods=['POST'])
 def getMessage():
     request_object = request.stream.read().decode("utf-8")
     update_to_json = [telebot.types.Update.de_json(request_object)]
     bot.process_new_updates(update_to_json)
-    return "got Message"
+    return "got Message bro"
 
 
 
@@ -25,7 +26,7 @@ def pay():
 def webhook():
     url=PROD_URL
     bot.remove_webhook()
-    bot.set_webhook(url + TOKEN_PRODUCTION)
+    bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
 
 # handlers.bot.polling()
