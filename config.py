@@ -8,7 +8,7 @@ from datetime import datetime
 
 from database import database as db
 
-from settings import TOKEN, PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID, TEST_URL, PROD_URL
+from settings import TOKEN, PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID, TEST_URL, PROD_URL, TOKEN_PRODUCTION
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
 bot = telebot.TeleBot(TOKEN, threaded=True)
