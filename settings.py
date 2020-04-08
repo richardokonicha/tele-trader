@@ -8,3 +8,8 @@ PUBLIC_KEY = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
 PRIVATE_KEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
 ipn_url="https://0218d890.ngrok.io/pay"
 
+ADMIN_ID = 1053579181
+
+TEST_URL = "https://ca773b83.ngrok.io/"
+
+PROD_URL = 'https://fcx-bot.herokuapp.com/'
