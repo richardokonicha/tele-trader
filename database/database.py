@@ -8,7 +8,7 @@ from datetime import datetime
 
 Session = sessionmaker()
 
-engine = create_engine('sqlite:///database/database.db', echo=True)
+engine = create_engine('sqlite:///database/database.db', echo=True, connect_args={'check_same_thread': False})
 
 Session.configure(bind=engine)
 
@@ -34,6 +34,7 @@ class User(Base):
     account_balance = Column(Integer)
     active_investment = Column(Integer)
     pending_investment = Column(Integer)
+    active_reinvestment = Column(Integer)
 
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
@@ -42,6 +43,11 @@ class User(Base):
         self.is_admin = is_admin
         self.is_new_user = is_new_user
         self.registered_date = datetime.now().isoformat()
+
+        self.account_balance = 0
+        self.active_investment = 0
+        self.active_reinvestment = 0
+        self.pending_investment = 0
 
 
     def create_user():

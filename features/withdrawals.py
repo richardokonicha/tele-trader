@@ -18,8 +18,8 @@ it_confirm_markup.add(it_confirm_btn, it_modify_btn)
 
 
 confirm = {
-    "ENGLISH": en_confirm_markup,
-    "ITALIAN": it_confirm_markup
+    "en": en_confirm_markup,
+    "it": it_confirm_markup
 }
 
 ################ ADDRESS ENDS
@@ -44,8 +44,8 @@ it_confirm_order_markup.add(it_confirm_order_btn, it_modify_order_btn)
 
 
 confirm_order = {
-    "ENGLISH": en_confirm_order_markup,
-    "ITALIAN": it_confirm_order_markup
+    "en": en_confirm_order_markup,
+    "it": it_confirm_order_markup
 }
 ##################
 
@@ -53,42 +53,57 @@ confirm_order = {
 @bot.callback_query_handler(func=lambda call: True)
 def callback_answer(call):
     chat_id = call.message.chat.id
-    user_object = get_user_from_call(call.message)
-    lang = user_object["lang"]
-    wallet_address = call.message.text
+    # chat_id = message.chat.id
+    user_id = call.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+
+
+    # user_object = get_user_from_call(call.message)
+    # lang = user_object["lang"]
+    wallet_address = call.message.text.split('\n')[1]
+
     if call.data == "confirm_address":
+        fcx_user.wallet_address = wallet_address
         
-        data = {
-            "Withdrawals": {
-                "wallet_address": wallet_address.split("\n")[1],
-            }
-        }
-        update_user(user_object["user_id"], data)
+        # data = {
+        #     "Withdrawals": {
+        #         "wallet_address": wallet_address.split("\n")[1],
+        #     }
+        # }
+        # update_user(user_object["user_id"], data)
         
         confirmation = {
-                "ENGLISH": f"""
+                "en": f"""
 Your bitcoin wallet address has been set to : 
-<strong>{wallet_address}</strong>
+<strong>{fcx_user.wallet_address}</strong>
+
+You can now make a <b>withdrawal</b>
                 """,
-                "ITALIAN": f"""
+                "it": f"""
 Your bitcoin wallet address has been set to (italian) : 
-<strong>{wallet_address}</strong>
+<strong>{fcx_user.wallet_address}</strong>
+
+You can now make a <b>withdrawal</b>
                 """
         }
         bot.send_message(chat_id, text=confirmation[lang], parse_mode="html", reply_markup=dashboard[lang])
+        # withdrawal(message)
+
 
     elif call.data == "cancel_address":
         bot.send_message(chat_id, text="not set", reply_markup=dashboard[lang])
     elif call.data == "confirm_order":
-            data = {
-                    "withdrawal_request_confirmation": "Yes"
-            }
-            user_object.update(data)
+            # data = {
+            #         "withdrawal_request_confirmation": "Yes"
+            # }
+            # user_object.update(data)
             order_set_text = {
-                "ENGLISH": "Your order is set {amount} would be credited to your account within 72 hours",
-                "ITALIAN": "Il tuo ordine è impostato {amount} verrebbe accreditato sul tuo conto entro 72 ore"
+                "en": "Your withdrawal order of {amount} would be credited to your account within 72 hours",
+                "it": "Il tuo ordine è impostato {amount} verrebbe accreditato sul tuo conto entro 72 ore"
             }
-            update_user(user_object["user_id"], user_object)
+            # update_user(user_object["user_id"], user_object)
             bot.send_message(
                 chat_id, 
                 text=order_set_text[lang], 
@@ -100,16 +115,24 @@ Your bitcoin wallet address has been set to (italian) :
 
 
 def wallet_amount_confirmation(message):
-    user_object = get_user(message)
-    lang = user_object["lang"]
     chat_id = message.chat.id
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+
+
+
+    # user_object = get_user(message)
+    # lang = user_object["lang"]
+    # chat_id = message.chat.id
     amount = message.text
     try:
         amount = float(amount)
-        if amount > user_object["investment"]["balance"]:
+        if amount > balance:
             insufficient_balance_text = {
-                "ENGLISH": "You can't withdrawal a value greater than your account balance try again",
-                "ITALIAN": "Non puoi prelevare un valore superiore al saldo del tuo account"
+                "en": "You can't withdrawal a value greater than your account balance try again",
+                "it": "Non puoi prelevare un valore superiore al saldo del tuo account"
             }
             bot.send_message(
                 chat_id, 
@@ -124,44 +147,58 @@ def wallet_amount_confirmation(message):
 
         else:
             try:
-                wallet_address = user_object["wallet_address"]
-                data = {
-                    "Withdrawals": {
-                        "withdrawal_request":  {
-                            "withdrawal_request": amount,
-                            # "date_of_request": datetime.now(),
-                            "status": "unconfirmed"
-                            }
-                    }
-                }
-                update_user(user_object["user_id"], data)
+                wallet_address = fcx_user.wallet_address
+                if wallet_address is not None:
 
-                address_confirmation = {
-                    "ENGLISH": f"""
+
+                # data = {
+                #     "Withdrawals": {
+                #         "withdrawal_request":  {
+                #             "withdrawal_request": amount,
+                #             # "date_of_request": datetime.now(),
+                #             "status": "unconfirmed"
+                #             }
+                #     }
+                # }
+                # update_user(user_object["user_id"], data)
+
+                    address_confirmation = {
+                        "en": f"""
 Withdrawal Amount: <b>{amount}</b>
 Payment Address: <b>{wallet_address}</b>
 """,
-                    "ITALIAN": f"""
+                        "it": f"""
 Importo prelievo: <b>{amount}</b>
 indirizzo di pagamento: <b>{wallet_address}</b>
                         """
-                }
-                            
-                bot.send_message(chat_id, text=address_confirmation[lang], parse_mode="html", reply_markup=confirm_order[lang])
+                    }
+                # data = {
+                #     "Withdrawals": {
+                #         "withdrawal_request":  {
+                #             "withdrawal_request": amount,
+                #             # "date_of_request": datetime.now(),
+                #             "status": "unconfirmed"
+                #             }
+                #     }
+                # }
+                # update_user(user_object["user_id"], data)
 
+                            
+                    bot.send_message(chat_id, text=address_confirmation[lang], parse_mode="html", reply_markup=confirm_order[lang])
+                
+                else:
+                    bot.send_message(chat_id, text="Set btc address", parse_mode="html")
+                    set_wallet_address(message)
+                    
             except KeyError:
                 bot.send_message(chat_id, text="Invalid wallet address", parse_mode="html")
                 set_wallet_address(message)
 
 
-                
-                
-
-
     except ValueError:
         invalid_amount = {
-            "ENGLISH": "Invalid amount please insert number",
-            "ITALIAN": "Importo non valido inserire il numero"
+            "en": "Invalid amount please insert number",
+            "it": "Importo non valido inserire il numero"
 
         }
         bot.send_message(
@@ -183,17 +220,23 @@ indirizzo di pagamento: <b>{wallet_address}</b>
 
 
 def wallet_address_confirmation(message):
-    user_object = get_user(message)
-    lang = user_object["lang"]
     chat_id = message.chat.id
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+
+    # user_object = get_user(message)
+    # lang = user_object["lang"]
+    # chat_id = message.chat.id
     wallet_address = message.text
 
     address_confirmation = {
-            "ENGLISH": f"""
+            "en": f"""
 You're about to set your bitcoin wallet address to : 
 <strong>{wallet_address}</strong>
             """,
-            "ITALIAN": f"""
+            "it ": f"""
 You're about to set you bitcoin wallet address to (italian) : 
 <strong>{wallet_address}</strong>
             """
@@ -206,15 +249,21 @@ You're about to set you bitcoin wallet address to (italian) :
 
 
 def set_wallet_address(message):
-    user_object = get_user(message)
-    lang = user_object["lang"]
+    regex_filter = '^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$'
     chat_id = message.chat.id
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    lang = fcx_user.language
+
+    # user_object = get_user(message)
+    # lang = user_object["lang"]
+    # chat_id = message.chat.id
     wallet_address = message.text
     text_enter_address = {
-        "ENGLISH": """
+        "en": """
 <b>Please enter your Bitcoin wallet address:</b>
         """,
-        "ITALIAN": """
+        "it": """
 <b>Per favore inserire l’indirizzo del Vostro Wallet Bitcoin</b>
         """
     }
@@ -235,32 +284,36 @@ def set_wallet_address(message):
 )
 def withdrawal(message):
     chat_id = message.chat.id
-    user_object = get_user(message)
-    balance = user_object["investment"]['balance']
-    lang = user_object["lang"]
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+    # user_object = get_user(message)
+    # balance = user_object["investment"]['balance']
+    # lang = user_object["lang"]
     withdrawal_minimum_amount = 0.002
 
 
     withdrawal_amount_text = {
-        "ENGLISH": """<b>Enter the amount you wish to withdraw</b>""",
-        "ITALIAN": """Enter the amount you wish to withdraw(italian"""
+        "en": """<b>Enter the amount you wish to withdraw</b>""",
+        "it": """Enter the amount you wish to withdraw(italian"""
     }
     ################
     text_info = {
-        "ENGLISH": f"""
+        "en": f"""
 You can create a payout request any time, depending on your account balance.
 Minimum amount to withdraw is 0.002 BTC.
         """,
-        "ITALIAN": f"""
+        "it": f"""
 E’ possibile fare una richiesta di pagamento in qualsiasi momento, a seconda del saldo del Vostro conto.
 L’importo minimo di prelievo è di 0,002 BTC.
         """
         }
     text_insufficient = {
-        "ENGLISH": """
+        "en": """
 You don't have enough funds to create a payout request
         """,
-        "ITALIAN": """
+        "it": """
 Non avete abbastanza fondi per creare una richiesta di pagamento.
         """
     }
@@ -279,7 +332,12 @@ Non avete abbastanza fondi per creare una richiesta di pagamento.
             parse_mode="html"
             )
 
-        bot.send_message(chat_id, text=withdrawal_amount_text[lang], parse_mode="html")
+        bot.send_message(
+            chat_id, 
+            text=withdrawal_amount_text[lang], 
+            parse_mode="html",
+            reply_markup=force_r
+            )
         bot.register_next_step_handler(message, wallet_amount_confirmation)
 
         
