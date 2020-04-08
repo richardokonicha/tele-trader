@@ -9,22 +9,25 @@ from config import *
         )
 )
 def deposit(message):
+    user_id = message.from_user.id
     chat_id = message.chat.id
-    user_object = get_user(message)
-    balance = user_object["investment"]['balance']
-    lang = user_object["lang"]
-    
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+    dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+
+
 
     wait_text = {
-        "ENGLISH": """Please wait for our system to generate your New Deposit Address.""",
-        "ITALIAN": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
+        "en": """Please wait for our system to generate your New Deposit Address.""",
+        "it": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
     }
     arrival_text = {
-        "ENGLISH": """Here is your personal BTC address for your Investments:""",
-        "ITALIAN": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
+        "en": """Here is your personal BTC address for your Investments:""",
+        "it": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
     }
     duration_text = {
-        "ENGLISH": """
+        "en": """
 Bitcoin Amount:
 Min: 0.025 BTC
 Max: 5 BTC
@@ -32,7 +35,7 @@ Max: 5 BTC
 This address will be active for 4 hours.
 Funds will show up after first blockchain confirmation.
 """,
-        "ITALIAN": """
+        "it": """
 Importo Bitcoin: 
 Min. 0,025 BTC 
 Max. 5 BTC
@@ -75,10 +78,18 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         )
     
     except TypeError:
+        fcx_user.account_balance = 0.1 # REMOVE THIS
+        fcx_user.commit()
+        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        bot.send_message(
+            chat_id,
+            text="error occured you'll be contacted by support, you've been gifted 0.10 virtual btc to test other features",
+            reply_markup=dashboard.get(lang)
+        )
         text = payment_details["error"]
         bot.send_message(
-        1053579181,
-        text=f"<strong>{text} for fcx server</strong>",
-        parse_mode="html"
-    )
+            ADMIN_ID,
+            text=f"<strong>{text} for fcx server</strong>",
+            parse_mode="html"
+        )
 

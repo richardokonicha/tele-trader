@@ -78,7 +78,7 @@ Ora puoi effettuare un <b>prelievo</b>
         }
         bot.send_message(chat_id, text=confirmation[lang], parse_mode="html", reply_markup=dashboard[lang])
     elif call.data == "cancel_address":
-        bot.send_message(chat_id, text="not set", reply_markup=dashboard[lang])
+        bot.send_message(chat_id, text="cancelled", reply_markup=dashboard[lang])
     elif call.data == "confirm_order":
         withdrawal_order = call.message.text
         amount_text, address_text = withdrawal_order.split('\n')
@@ -106,6 +106,7 @@ Il tuo nuovo saldo è {fcx_user.account_balance}"""
             text=withdrawal_order,
             parse_mode="html"
         )
+        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         bot.send_message(
             chat_id, 
             text=order_set_text[lang], 

@@ -18,6 +18,7 @@ def balance(message):
         show_language(message)
     else:
         lang = fcx_user.language
+        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
 
 
 
