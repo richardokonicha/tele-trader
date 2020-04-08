@@ -8,6 +8,7 @@ def start(message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     name = message.from_user.first_name
+    # dashboard[lang][0][0] = "Balances {balance} BTC"
 
     # user_object = get_add_user(message)
     
@@ -42,7 +43,6 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
 
                                 """
             }
-
     fcx_user = db.User.get_user(user_id)
 
     if fcx_user is not None:
@@ -51,15 +51,15 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
             show_languages.show_language(message)
             fcx_user.commit()
         else:
+            dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
             bot.send_message(
                 chat_id,
                 text=welcome_text[lang],
                 reply_markup=dashboard[lang],
                 parse_mode="HTML"
                 )
-            
-
     else:
+        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         fcx_user = db.User(
             name=name,
             user_id=user_id
