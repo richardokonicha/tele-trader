@@ -22,6 +22,7 @@ confirm = {
     "it": it_confirm_markup
 }
 
+
 ################ ADDRESS ENDS
 
 
@@ -83,8 +84,18 @@ Ora puoi effettuare un <b>prelievo</b>
         withdrawal_order = call.message.text
         amount_text, address_text = withdrawal_order.split('\n')
         amount = float(amount_text.split(' ')[-1])
+        wallet_address = address_text.split(' ')[-1]
         fcx_user.account_balance = fcx_user.account_balance - amount
+        fcx_transact = db.Transactions(
+            user_id = fcx_user.user_id,
+            transaction_type="withdrawal",
+            amount=amount,
+            status="Pending",
+            balance=fcx_user.account_balance,
+            wallet_address=wallet_address
+            )
         fcx_user.commit()
+        fcx_transact.commit()
         order_set_text = {
             "en": f"""Your withdrawal order of 
 <b>{amount_text}</b> 

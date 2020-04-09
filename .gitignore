@@ -9,3 +9,8 @@ __pycache__
 database/database.json
 database/database.json
 extras/test.http
+database/database2.db
+database/database1.db
+database/database.db
+
+
