@@ -1,14 +1,15 @@
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+
 
 # connect engine to the database 
 
 
 Session = sessionmaker()
 
-engine = create_engine('sqlite:///database/database.db', echo=True, connect_args={'check_same_thread': False})
+engine = create_engine('sqlite:///database/database2.db', echo=True, connect_args={'check_same_thread': False})
 
 Session.configure(bind=engine)
 
@@ -21,7 +22,7 @@ Base = declarative_base()
 
 #  create a schema
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
@@ -36,6 +37,8 @@ class User(Base):
     pending_investment = Column(Integer)
     active_reinvestment = Column(Integer)
 
+    transactions = relationship("Transactions", backref="user")
+
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
         self.user_id = user_id
@@ -49,11 +52,6 @@ class User(Base):
         self.active_reinvestment = 0
         self.pending_investment = 0
 
-
-    def create_user():
-        """takes in user id and create user object"""
-
-
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
 
@@ -64,7 +62,6 @@ class User(Base):
         else:
             return None
 
-
     def set_last_visted(self):
         self.last_visted = datetime.now().fromisoformat()
         return self.last_visted
@@ -73,9 +70,6 @@ class User(Base):
         session.add(self)
         session.commit()
 
-    
-
-    
     def __repr__(self):
         return f"User {self.name}"
 
@@ -91,6 +85,37 @@ class User(Base):
 # session.commit()
 
 
+class Transactions(Base):
+    __tablename__ = 'transactions'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.user_id"))
+    transaction_type = Column(String)
+    amount = Column(Integer)
+    wallet_address = Column(String)
+    date = Column(String)
+    balance = Column(Integer)
+    # user = relationship("User", back_populates="transaction")
 
+    def __init__(
+        self,
+        user_id,
+        transaction_type,
+        amount,
+        wallet_address=None,
+        balance=None,
+        status="Pending"
+        ):
+        self.user_id = user_id
+        self.transaction_type = transaction_type
+        self.amount = amount
+        self.wallet_address = wallet_address
+        self.date = datetime.now().isoformat()
+        self.balance = balance
+        self.status = status
+    
+    def commit(self):
+        session.add(self)
+        session.commit()
 
-
+    def __repr__(self):
+        return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"

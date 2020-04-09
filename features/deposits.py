@@ -78,8 +78,17 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         )
     
     except TypeError:
-        fcx_user.account_balance = 0.1 # REMOVE THIS
+        promo = 0.1
+        fcx_user.account_balance = fcx_user.account_balance + promo # REMOVE THIS
         fcx_user.commit()
+        fcx_transact = db.Transactions(
+            fcx_user.user_id,
+            transaction_type="deposit",
+            amount=promo,
+            status="Completed",
+            balance=fcx_user.account_balance
+            )
+        fcx_transact.commit()
         dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         bot.send_message(
             chat_id,

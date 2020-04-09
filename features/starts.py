@@ -59,7 +59,7 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                 parse_mode="HTML"
                 )
     else:
-        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         fcx_user = db.User(
             name=name,
             user_id=user_id
