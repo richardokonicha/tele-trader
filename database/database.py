@@ -9,7 +9,7 @@ from datetime import datetime
 
 Session = sessionmaker()
 
-engine = create_engine('sqlite:///database/database2.db', echo=True, connect_args={'check_same_thread': False})
+engine = create_engine('sqlite:///database/database.db', echo=True, connect_args={'check_same_thread': False})
 
 Session.configure(bind=engine)
 
