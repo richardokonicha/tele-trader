@@ -5,6 +5,7 @@ from telebot import types
 from functions import *
 from coinpayment import CoinPayments
 from datetime import datetime
+import calendar
 
 from database import database as db
 
@@ -49,6 +50,10 @@ fcx_markup = {
     ]
 }
 
+# fcx_markup_balances = {
+#     "en": f"Balances  {fcx_user.account_balance} BTC",
+#     "it": f"Bilance  {fcx_user.account_balance} BTC"
+# }
 
 
 ######### keyboard markup above here #######
@@ -70,7 +75,85 @@ lang_keys = types.ReplyKeyboardMarkup(
     one_time_keyboard=True
     )
 lang_keys.keyboard = select_lang_markup
+
+
+
+
+
+################# ADDRESS 
+en_confirm_markup = types.InlineKeyboardMarkup(row_width=2)
+it_confirm_markup = types.InlineKeyboardMarkup()
+
+en_confirm_btn = types.InlineKeyboardButton(text="Confirm", callback_data="confirm_address")
+en_modify_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_address")
+
+it_confirm_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_address")
+it_modify_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_address")
+
+# en_confirm_markup.keyboard = [[en_confirm_btn], [en_modify_btn]]
+# it_confirm_markup.keyboard = [[it_confirm_btn], [it_modify_btn]]
+
+en_confirm_markup.add(en_confirm_btn, en_modify_btn)
+it_confirm_markup.add(it_confirm_btn, it_modify_btn)
+
+
+confirm = {
+    "en": en_confirm_markup,
+    "it": it_confirm_markup
+}
+
+
+################ ADDRESS ENDS
+
+
+################ ORDER #########
+
+en_confirm_order_markup = types.InlineKeyboardMarkup(row_width=2)
+it_confirm_order_markup = types.InlineKeyboardMarkup()
+
+en_confirm_order_btn = types.InlineKeyboardButton(text="Confirm", callback_data="confirm_order")
+it_confirm_order_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_order")
+
+en_cancel_order_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_order")
+it_cancel_order_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_order")
+# en_confirm_markup.keyboard = [[en_confirm_btn], [en_modify_btn]]
+# it_confirm_markup.keyboard = [[it_confirm_btn], [it_modify_btn]]
+en_confirm_order_markup.add(en_confirm_order_btn, en_cancel_order_btn)
+it_confirm_order_markup.add(it_confirm_order_btn, it_cancel_order_btn)
+confirm_order = {
+    "en": en_confirm_order_markup,
+    "it": it_confirm_order_markup
+}
+##################
+
+
+############################reinvestment
+
+
+en_confirm_reinvestment_markup = types.InlineKeyboardMarkup(row_width=2)
+it_confirm_reinvestment_markup = types.InlineKeyboardMarkup(row_width=2)
+
+en_confirm_reinvestment_btn = types.InlineKeyboardButton(text="Confirm", callback_data="confirm_reinvestment")
+it_confirm_reinvestment_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_reinvestment")
+
+en_cancel_reinvestment_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_reinvestment")
+it_cancel_reinvestment_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_reinvestment")
+
+en_confirm_reinvestment_markup.add(en_confirm_reinvestment_btn, en_cancel_reinvestment_btn)
+it_confirm_reinvestment_markup.add(it_confirm_reinvestment_btn, it_cancel_reinvestment_btn)
+confirm_reinvestment = {
+    "en": en_confirm_reinvestment_markup,
+    "it": it_confirm_reinvestment_markup
+}
+
+#############################reinvestment
+
+
+
 ########## keyboard layout defination ends #
+
+
+withdrawal_minimum_amount = 0.002
 
 import importdir
 importdir.do("features", globals())

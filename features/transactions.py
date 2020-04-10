@@ -3,23 +3,40 @@ from config import *
 
 @bot.message_handler(
     func=lambda message: message.content_type == 'text'
-    and ( 
-        bool(re.search(r'^Transactions$', message.text, re.IGNORECASE))
-         or  bool(re.search(r'^Transazioni$', message.text, re.IGNORECASE))
+    and (
+        bool(re.search(r'Transactions', message.text, re.IGNORECASE))
+         or  bool(re.search(r'Transazioni$', message.text, re.IGNORECASE))
         )
 )
 def transaction(message):
     chat_id = message.chat.id
-    user_object = get_user(message)
-    balance = user_object["investment"]['balance']
-    lang = user_object["lang"]
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+    transactions = db.Transactions.get_transactions(user_id)
+    deposits = []
+    payouts = []
+    reinvestments = []
+    commissions = []
+    for value in transactions:
+        if value.transaction_type=="deposit":
+            deposits.append(value.date.split("T")[0]+"  "+str(value.amount))
+        if value.transaction_type=="withdrawal":
+            payouts.append(value.date.split("T")[0]+"  "+str(value.amount))
+        if value.transaction_type=="reinvestment":
+            reinvestments.append(value.date.split("T")[0]+"  "+str(value.amount))
+        if value.transaction_type=="commissions":
+            commissions.append(value.date.split("T")[0]+"  "+str(value.amount))
+
     text_info = {
-        "ENGLISH": f"""
+        "en": f"""
 
 Deposits:
 .....
 30/03/2020 0.022111 BTC 
-23/03/2020 0.500000 BTC     
+23/03/2020 0.500000 BTC   
+{deposits}
 
 
 Payouts:
@@ -39,7 +56,7 @@ Commissions:
 08/06/2020 0.022111 BTC
 
         """,
-        "ITALIAN": f"""
+        "it": f"""
 Depositi:
 .....
 30/03/2020 0,022111 BTC   
