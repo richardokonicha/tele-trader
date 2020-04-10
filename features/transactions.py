@@ -21,67 +21,75 @@ def transaction(message):
     commissions = []
     for value in transactions:
         if value.transaction_type=="deposit":
-            deposits.append(value.date.split("T")[0]+"  "+str(value.amount))
+            deposits.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
         if value.transaction_type=="withdrawal":
-            payouts.append(value.date.split("T")[0]+"  "+str(value.amount))
+            payouts.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
         if value.transaction_type=="reinvestment":
-            reinvestments.append(value.date.split("T")[0]+"  "+str(value.amount))
+            reinvestments.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
         if value.transaction_type=="commissions":
-            commissions.append(value.date.split("T")[0]+"  "+str(value.amount))
+            commissions.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
+
+    def listToString(s):
+        str1 = """"""
+        for ele in s:
+            str1 += (ele+"""
+""")
+        return str1  
+    text_deposit = listToString(deposits)
+    text_reinvestments = listToString(reinvestments)
+    text_payout = listToString(payouts)
+    text_commissions = listToString(commissions)
+            
 
     text_info = {
         "en": f"""
 
 Deposits:
-.....
-30/03/2020 0.022111 BTC 
-23/03/2020 0.500000 BTC   
-{deposits}
+.....  
+{text_deposit}
 
 
 Payouts:
 .....
-30/04/2020 0.022111 BTC 
-27/03/2020 0.500000 BTC
+{text_payout}
 
 
 Reinvestments:
 ......
-15/07/2020 0.500000 BTC
-15/06/2020 0.022111 BTC
+{text_reinvestments}
 
 Commissions:
 .....
-17/08/2020 0.500000 BTC
-08/06/2020 0.022111 BTC
+{text_commissions}
 
         """,
         "it": f"""
 Depositi:
 .....
-30/03/2020 0,022111 BTC   
-23/03/2020 0.500000 BTC 
+{text_deposit}
+
 
 Pagamenti:
 .....
-30/04/2020 0,022111 BTC
-27/03/2020 0.500000 BTC
+{text_payout}
 
 Reinvestimenti:
 ......
-15/07/2020 0,500000 BTC
-15/06/2020 0,022111 BTC
+{text_reinvestments}
 
 Commissioni:
 .....
-17/08/2020 0,500000 BTC
-08/06/2020 0.022111 BTC 
+{text_commissions}
 
 
         """
         }
 
-
+    fcx_markup_balances = {
+                "en": f"Balances  {fcx_user.account_balance} BTC",
+                "it": f"Bilance  {fcx_user.account_balance} BTC"
+                }
+    dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
     bot.send_message(
         chat_id, text=text_info[lang],
         reply_markup=dashboard.get(lang), parse_mode="html"

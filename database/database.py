@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # connect engine to the database 
@@ -94,6 +94,8 @@ class Transactions(Base):
     amount = Column(Integer)
     wallet_address = Column(String)
     date = Column(String)
+    start_date = Column(String)
+
     balance = Column(Integer)
     # user = relationship("User", back_populates="transaction")
 
@@ -111,6 +113,14 @@ class Transactions(Base):
         self.amount = amount
         self.wallet_address = wallet_address
         self.date = datetime.now().isoformat()
+        self.start_date = datetime.now().replace(
+            day=(datetime.now().day+(7-datetime.now().weekday()))
+            ).isoformat()
+        self.close_date = (
+            datetime.now().replace(
+                day=(datetime.now().day+(7-datetime.now().weekday()))
+                ) + timedelta(days=180)
+            ).isoformat()
         self.balance = balance
         self.status = status
 
@@ -125,6 +135,12 @@ class Transactions(Base):
     def commit(self):
         session.add(self)
         session.commit()
+
+    def start_date(self):
+        return (self.start_date).isoformat().strftime("%A %d. %B %Y")
+    
+    def close_date(self):
+        return (self.start_date + timedelta(days=180)).isoformat().strftime("%A %d. %B %Y")
 
     def __repr__(self):
         return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"
