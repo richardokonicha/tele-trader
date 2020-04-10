@@ -10,8 +10,8 @@ import calendar
 from database import database as db
 
 from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID, TEST_URL, PROD_URL
-# from settings import TOKEN_PRODUCTION as TOKEN
-from settings import TOKEN_TEST as TOKEN
+from settings import TOKEN_PRODUCTION as TOKEN
+# from settings import TOKEN_TEST as TOKEN
 
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
