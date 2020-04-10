@@ -278,7 +278,7 @@ Non avete abbastanza fondi per creare una richiesta di pagamento.
     if balance < withdrawal_minimum_amount:
         bot.send_message(
             chat_id, text=text_info[lang] + text_insufficient[lang],
-            reply_markup=confirm, parse_mode="html"
+            reply_markup=confirm[lang], parse_mode="html"
             )
     else:
         bot.send_message(

@@ -8,17 +8,6 @@ def start(message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     name = message.from_user.first_name
-    # dashboard[lang][0][0] = "Balances {balance} BTC"
-
-    # user_object = get_add_user(message)
-    
-    # if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
-    #     show_language(message)
-    # else:
-    #     user_object = get_user(message)
-    #     lang = user_object["lang"]
-        ####################################################################
-        ####### Here is the welcome text users get each time they press start
     welcome_text = {
 
             "en": """
@@ -59,18 +48,29 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                 parse_mode="HTML"
                 )
     else:
-        # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        # for new users only
+        select_prefered_lang = """
+Please select your language
+Seleziona la tua lingua preferita
+    """
         fcx_user = db.User(
             name=name,
             user_id=user_id
         )
-        show_languages.show_language(message)
-        lang = fcx_user.language
+        fcx_user.is_new_user = True
         fcx_user.commit()
-
         bot.send_message(
             chat_id,
-            text=welcome_text[lang],
-            reply_markup=dashboard[lang],
+            text=select_prefered_lang,
+            reply_markup=lang_keys,
             parse_mode="HTML"
             )
+
+        # show_languages.show_language(message)
+        # bot.send_message(
+        #     chat_id,
+        #     text=welcome_text[lang],
+        #     reply_markup=dashboard[lang],
+        #     parse_mode="HTML"
+        #     )
+        # lang = fcx_user.language

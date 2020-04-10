@@ -29,6 +29,7 @@ class User(Base):
     name = Column(String, nullable=False)
     language = Column(String)
     registered_date = Column(String)
+    is_new_user = Column(Boolean)
     last_visted = Column(String)
     wallet_address = Column(Integer)
 
@@ -51,7 +52,7 @@ class User(Base):
         self.active_investment = 0
         self.active_reinvestment = 0
         self.pending_investment = 0
-
+        
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
 
