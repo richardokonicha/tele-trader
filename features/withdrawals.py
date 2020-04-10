@@ -1,129 +1,5 @@
 from config import *
 
-################# ADDRESS 
-en_confirm_markup = types.InlineKeyboardMarkup(row_width=2)
-it_confirm_markup = types.InlineKeyboardMarkup()
-
-en_confirm_btn = types.InlineKeyboardButton(text="Confirm", callback_data="confirm_address")
-en_modify_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_address")
-
-it_confirm_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_address")
-it_modify_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_address")
-
-# en_confirm_markup.keyboard = [[en_confirm_btn], [en_modify_btn]]
-# it_confirm_markup.keyboard = [[it_confirm_btn], [it_modify_btn]]
-
-en_confirm_markup.add(en_confirm_btn, en_modify_btn)
-it_confirm_markup.add(it_confirm_btn, it_modify_btn)
-
-
-confirm = {
-    "en": en_confirm_markup,
-    "it": it_confirm_markup
-}
-
-
-################ ADDRESS ENDS
-
-
-################ ORDER #########
-
-en_confirm_order_markup = types.InlineKeyboardMarkup(row_width=2)
-it_confirm_order_markup = types.InlineKeyboardMarkup()
-
-en_confirm_order_btn = types.InlineKeyboardButton(text="Confirm", callback_data="confirm_order")
-en_modify_order_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_address")
-
-it_confirm_order_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_order")
-it_modify_order_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_address")
-
-# en_confirm_markup.keyboard = [[en_confirm_btn], [en_modify_btn]]
-# it_confirm_markup.keyboard = [[it_confirm_btn], [it_modify_btn]]
-
-en_confirm_order_markup.add(en_confirm_order_btn, en_modify_order_btn)
-it_confirm_order_markup.add(it_confirm_order_btn, it_modify_order_btn)
-
-
-confirm_order = {
-    "en": en_confirm_order_markup,
-    "it": it_confirm_order_markup
-}
-##################
-
-
-# Callback Handlers
-@bot.callback_query_handler(func=lambda call: True)
-def callback_answer(call):
-    chat_id = call.message.chat.id
-    user_id = call.from_user.id
-    fcx_user = db.User.get_user(user_id)
-    balance = fcx_user.account_balance
-    lang = fcx_user.language
-    wallet_address = call.message.text.split('\n')[1]
-    if call.data == "confirm_address":
-        fcx_user.wallet_address = wallet_address
-        fcx_user.commit()
-        confirmation = {
-                "en": f"""
-Your bitcoin wallet address has been set to : 
-<strong>{fcx_user.wallet_address}</strong>
-
-You can now make a <b>withdrawal</b>
-                """,
-                "it": f"""
-Il tuo indirizzo di portafoglio bitcoin è stato impostato su : 
-<strong>{fcx_user.wallet_address}</strong>
-
-Ora puoi effettuare un <b>prelievo</b>
-                """
-        }
-        bot.send_message(chat_id, text=confirmation[lang], parse_mode="html", reply_markup=dashboard[lang])
-    elif call.data == "cancel_address":
-        bot.send_message(chat_id, text="cancelled", reply_markup=dashboard[lang])
-    elif call.data == "confirm_order":
-        withdrawal_order = call.message.text
-        amount_text, address_text = withdrawal_order.split('\n')
-        amount = float(amount_text.split(' ')[-1])
-        wallet_address = address_text.split(' ')[-1]
-        fcx_user.account_balance = fcx_user.account_balance - amount
-        fcx_transact = db.Transactions(
-            user_id = fcx_user.user_id,
-            transaction_type="withdrawal",
-            amount=amount,
-            status="Pending",
-            balance=fcx_user.account_balance,
-            wallet_address=wallet_address
-            )
-        fcx_user.commit()
-        fcx_transact.commit()
-        order_set_text = {
-            "en": f"""Your withdrawal order of 
-<b>{amount_text}</b> 
-would be credited to your account
-<b>{address_text}</b> 
-within the next 72 hours
-
-Your new balance is {fcx_user.account_balance}""",
-            "it": f"""Il tuo ordine di prelievo di
-<b>{amount_text}</b> 
-verrebbe accreditato sul tuo conto Indirizzo di pagamento:
-<b>{address_text}</b>
-entro le prossime 72 ore
-
-Il tuo nuovo saldo è {fcx_user.account_balance}"""
-        }
-        bot.send_message(
-            ADMIN_ID,
-            text=withdrawal_order,
-            parse_mode="html"
-        )
-        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
-        bot.send_message(
-            chat_id, 
-            text=order_set_text[lang], 
-            parse_mode="html",
-            reply_markup=dashboard[lang]
-            )    
 
 
 def wallet_amount_confirmation(message):
@@ -278,7 +154,7 @@ Non avete abbastanza fondi per creare una richiesta di pagamento.
     if balance < withdrawal_minimum_amount:
         bot.send_message(
             chat_id, text=text_info[lang] + text_insufficient[lang],
-            reply_markup=confirm[lang], parse_mode="html"
+            reply_markup=dashboard[lang], parse_mode="html"
             )
     else:
         bot.send_message(
@@ -294,3 +170,4 @@ Non avete abbastanza fondi per creare una richiesta di pagamento.
             reply_markup=force_r
             )
         bot.register_next_step_handler(message, wallet_amount_confirmation)
+    

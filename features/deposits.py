@@ -78,9 +78,41 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         )
     
     except TypeError:
-        promo = 0.1
+        bot.send_message(
+            chat_id,
+            text="An error occured you'll be contacted by support to assit you.",
+            reply_markup=dashboard.get(lang)
+        )
+        
+        text = payment_details["error"]
+        bot.send_message(
+            ADMIN_ID,
+            text=f"<strong>{text} for fcx server</strong>",
+            parse_mode="html"
+        )
+
+
+
+### Promo code section
+
+
+@bot.message_handler(
+    func=lambda message: message.content_type == "text"
+    and (
+        bool(re.search(r'^PROMO', message.text, re.IGNORECASE))
+        )
+)
+def promo(message):
+    user_id = message.from_user.id
+    chat_id = message.chat.id
+    fcx_user = db.User.get_user(user_id)
+    balance = fcx_user.account_balance
+    lang = fcx_user.language
+    dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+    promo = message.text.split(" ")[-1]
+    try:
+        promo = float(promo)
         fcx_user.account_balance = fcx_user.account_balance + promo # REMOVE THIS
-        fcx_user.commit()
         fcx_transact = db.Transactions(
             fcx_user.user_id,
             transaction_type="deposit",
@@ -92,13 +124,14 @@ I fondi appariranno dopo la prima conferma della Blockchain.
         dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         bot.send_message(
             chat_id,
-            text="error occured you'll be contacted by support, you've been gifted 0.10 virtual btc to test other features",
+            text=f"You've been gifted {promo} virtual btc to test other features",
             reply_markup=dashboard.get(lang)
         )
-        text = payment_details["error"]
+    except ValueError:
         bot.send_message(
-            ADMIN_ID,
-            text=f"<strong>{text} for fcx server</strong>",
-            parse_mode="html"
+            chat_id,
+            text="INVALID PROMO CODE",
+            reply_markup=dashboard.get(lang)
         )
+
 

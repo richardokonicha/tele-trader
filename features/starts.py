@@ -8,6 +8,10 @@ def start(message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     name = message.from_user.first_name
+    select_prefered_lang = """
+Please select your language
+Seleziona la tua lingua preferita
+    """
     welcome_text = {
 
             "en": """
@@ -37,7 +41,13 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
     if fcx_user is not None:
         lang = fcx_user.language
         if lang == None or lang not in ['en', 'it']:
-            show_languages.show_language(message)
+            bot.send_message(
+                chat_id,
+                text=select_prefered_lang,
+                reply_markup=lang_keys,
+                parse_mode="HTML"
+            )
+            # show_languages.show_language(message)
             fcx_user.commit()
         else:
             dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
@@ -49,10 +59,7 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                 )
     else:
         # for new users only
-        select_prefered_lang = """
-Please select your language
-Seleziona la tua lingua preferita
-    """
+        
         fcx_user = db.User(
             name=name,
             user_id=user_id

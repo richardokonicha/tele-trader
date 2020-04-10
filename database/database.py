@@ -113,6 +113,14 @@ class Transactions(Base):
         self.date = datetime.now().isoformat()
         self.balance = balance
         self.status = status
+
+    @classmethod
+    def get_transactions(cls, user_id):
+        transaction = session.query(cls).filter_by(user_id=user_id).all()
+        if transaction:
+            return transaction
+        else:
+            return None
     
     def commit(self):
         session.add(self)
