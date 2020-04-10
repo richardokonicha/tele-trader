@@ -9,6 +9,11 @@ def callback_answer(call):
     fcx_user = db.User.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
+    fcx_markup_balances = {
+        "en": f"Balances  {fcx_user.account_balance} BTC",
+        "it": f"Bilance  {fcx_user.account_balance} BTC"
+        }
+    dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
     if call.data == "confirm_address":
         wallet_address = call.message.text.split('\n')[1]
         fcx_user.wallet_address = wallet_address
@@ -67,7 +72,11 @@ Il tuo nuovo saldo è {fcx_user.account_balance}"""
             text=withdrawal_order,
             parse_mode="html"
         )
-        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        fcx_markup_balances = {
+            "en": f"Balances  {fcx_user.account_balance} BTC",
+            "it": f"Bilance  {fcx_user.account_balance} BTC"
+            }
+        dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
         bot.send_message(
             chat_id, 
             text=order_set_text[lang], 
@@ -78,27 +87,53 @@ Il tuo nuovo saldo è {fcx_user.account_balance}"""
     elif call.data == "confirm_reinvestment":
         amount = call.message.text.split(":")[-1]
         amount = float(amount.split(" ")[0])
-        fcx_user.account_balance = fcx_user.account_balance - amount
-        fcx_user.reinvestment = fcx_user.reinvestment + amount
-        fcx_reinvest = db.Transactions(
-            user_id=user_id,
-            transaction_type="reinvestment",
-            amount=amount,
-            balance=balance,
-            status="completed"
-        )
-        start_date = "Monday"
-        fcx_reinvest.commit()
-        confirm_reinvest_text = {
-            "en": f"""
-Done. Your reinvest starts {start_date}
-            """,
-            "it": f"""
-Fatto. Il Vostro reinvestimento inizia il {start_date}
-            """
-        }
-        bot.send_message(
-            chat_id,
-            text=confirm_reinvest_text[lang],
-            reply_markup=dashboard[lang]
-        )
+        if amount > fcx_user.account_balance:
+            text_insufficient = {
+                    "en": "You have insufficient account balance",
+                    "it": "Hai un saldo del conto insufficiente"
+            }
+            bot.send_message(
+                    chat_id,
+                    text=text_insufficient[lang],
+                    reply_markup=dashboard[lang]
+            )
+        else:
+
+            fcx_user.account_balance = fcx_user.account_balance - amount
+            fcx_user.active_investment = fcx_user.active_investment + amount
+            fcx_reinvest = db.Transactions(
+                user_id=user_id,
+                transaction_type="reinvestment",
+                amount=amount,
+                balance=balance,
+                status="completed"
+            )
+            start_date = datetime.fromisoformat(fcx_reinvest.start_date).strftime("%A %d. %B %Y")
+            close_date = datetime.fromisoformat(fcx_reinvest.close_date).strftime("%A %d. %B %Y")
+            fcx_reinvest.commit()
+            fcx_user.commit()
+            # fcx_transact = db.Transactions.get_user(user_id)
+
+            confirm_reinvest_text = {
+                "en": f"""
+    <b>Done. 
+    Your reinvest starts on {start_date}
+    for 180 days up until {close_date}</b>
+                """,
+                "it": f"""
+    <b>Fatto. 
+    Il Vostro reinvestimento inizia il {start_date}
+    per 180 giorni fino al {close_date}</b>
+                """
+            }
+            fcx_markup_balances = {
+                "en": f"Balances  {fcx_user.account_balance} BTC",
+                "it": f"Bilance  {fcx_user.account_balance} BTC"
+                }
+            dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
+            bot.send_message(
+                chat_id,
+                text=confirm_reinvest_text[lang],
+                reply_markup=dashboard[lang],
+                parse_mode="html"
+            )
