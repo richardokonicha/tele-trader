@@ -10,6 +10,6 @@ ipn_url="https://0218d890.ngrok.io/pay"
 
 ADMIN_ID = 1053579181
 
-TEST_URL = "https://65ca18d7.ngrok.io/"
+TEST_URL = "https://555cd460.ngrok.io/"
 
 PROD_URL = 'https://fcx-bot.herokuapp.com/'
