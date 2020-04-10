@@ -5,7 +5,7 @@ alchemy.py
 __pycache__[*]+.pyc
 core.py
 __pycache__
-# settings.py
+settings.py
 database/database.json
 database/database.json
 extras/test.http
