@@ -22,7 +22,7 @@ def pay():
 
 @server.route('/')
 def webhook():
-    url=TEST_URL
+    url=PROD_URL
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
