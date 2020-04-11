@@ -16,7 +16,16 @@ def balance(message):
     fcx_user = db.User.get_user(user_id)
     if fcx_user is not None:
         if fcx_user.language not in ["en", "it"]:
-            show_language(message)
+            select_prefered_lang = """
+Please select your language
+Seleziona la tua lingua preferita
+    """     
+            bot.send_message(
+                chat_id,
+                text=select_prefered_lang,
+                reply_markup=lang_keys,
+                parse_mode="HTML"
+                )
         else:
             lang = fcx_user.language
             dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
