@@ -16,37 +16,27 @@ def balance(message):
     fcx_user = db.User.get_user(user_id)
     if fcx_user is not None:
         if fcx_user.language not in ["en", "it"]:
-            show_language(message)
+            select_prefered_lang = """
+Please select your language
+Seleziona la tua lingua preferita
+    """     
+            bot.send_message(
+                chat_id,
+                text=select_prefered_lang,
+                reply_markup=lang_keys,
+                parse_mode="HTML"
+                )
         else:
             lang = fcx_user.language
             dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
-
-
-
-        # user_object = get_user(message)
-        # if user_object["lang"] not in ["ENGLISH", "ITALIAN"]:
-        #     show_language(message)
-        # else:
-        #     lang = user_object["lang"]
-
             try:
                 balance = fcx_user.account_balance
                 active_investment = fcx_user.active_investment
                 active_reinvestment = fcx_user.active_reinvestment
-                pending_investment = fcx_user.pending_investment
-
-
-                # balance = user_object["investment"]['balance']
-                # active_investment = user_object["investment"]['active_investment']
-                # active_reinvestment = user_object["investment"]['active_reinvestment']
-                # pending_investment = user_object["investment"]['pending_investment']
-                
-                
+                pending_investment = fcx_user.pending_investment   
                 balance_text = {
 
                 "en": f"""
-
-
     Your Account Balance:
     <strong>{balance} BTC</strong>
     Total Active Investments:
