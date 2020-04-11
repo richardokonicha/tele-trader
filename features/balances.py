@@ -56,8 +56,8 @@ def balance(message):
     Total Pending Investments:
     <strong>{pending_investment} BTC</strong>
 
-    Base rate: 0.2% per day.
-    You may add another investment by pressing the <strong>DEPOSIT</strong> button. Your Balance will be grow up according Base rate and your Referrals.
+Base rate: 0.2% per day.
+You may add another investment by pressing the <strong>DEPOSIT</strong> button. Your Balance will be grow up according Base rate and your Referrals.
                 """,
 
                 "it": f"""
@@ -72,8 +72,8 @@ def balance(message):
     Investimenti in sospeso:
     <strong>{pending_investment} BTC</strong>
 
-    Tariffa base: 0,2% al giorno.
-    È possibile aggiungere un altro investimento premendo il pulsante <strong>DEPOSIT</strong>. Il tuo saldo crescerà in base alla tariffa base e ai tuoi referral.        
+Tariffa base: 0,2% al giorno.
+È possibile aggiungere un altro investimento premendo il pulsante <strong>DEPOSIT</strong>. Il tuo saldo crescerà in base alla tariffa base e ai tuoi referral.        
 
 
     """

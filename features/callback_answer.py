@@ -54,8 +54,10 @@ Ora puoi effettuare un <b>prelievo</b>
         order_set_text = {
             "en": f"""Your withdrawal order of 
 <b>{amount_text}</b> 
+
 would be credited to your account
 <b>{address_text}</b> 
+
 within the next 72 hours
 
 Your new balance is {fcx_user.account_balance}""",
@@ -117,13 +119,13 @@ Il tuo nuovo saldo è {fcx_user.account_balance}"""
             confirm_reinvest_text = {
                 "en": f"""
     <b>Done. 
-    Your reinvest starts on {start_date}
-    for 180 days up until {close_date}</b>
+Your reinvest starts on {start_date}
+for 180 days up until {close_date}</b>
                 """,
                 "it": f"""
     <b>Fatto. 
-    Il Vostro reinvestimento inizia il {start_date}
-    per 180 giorni fino al {close_date}</b>
+Il Vostro reinvestimento inizia il {start_date}
+per 180 giorni fino al {close_date}</b>
                 """
             }
             fcx_markup_balances = {
