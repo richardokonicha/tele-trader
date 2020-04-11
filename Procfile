@@ -1,1 +1,1 @@
-web: python3 fcx_trader_test.py
+web: python==3.7 fcx_trader_test.py
