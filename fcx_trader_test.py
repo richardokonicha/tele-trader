@@ -15,10 +15,9 @@ def getMessage():
 
 
 
-@server.route("/pay", methods=["POST"])
+@server.route("/")
 def pay():
-    requests = request
-    return requests
+    return "This is the fcx trading bot you can reach me @FCX_trading_bot on telegram"
 
 @server.route('/hook')
 def webhook():
