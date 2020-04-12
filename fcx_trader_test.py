@@ -20,7 +20,7 @@ def pay():
     requests = request
     return requests
 
-@server.route('/')
+@server.route('/hook')
 def webhook():
     url=PROD_URL
     bot.remove_webhook()
