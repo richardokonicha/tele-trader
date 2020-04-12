@@ -1,7 +1,7 @@
 from config import *
 
 @bot.message_handler(
-    func=lambda message: message.text.split()[0] in ["English", "Italian"]
+    func=lambda message: message.text.split()[0] in ["English", "Italiano"]
     # message.content_type == 'text' and 
     )
 def set_langauge(message):
@@ -12,7 +12,7 @@ def set_langauge(message):
     message_lang = message.text.split()[0].upper()
     if message_lang == "ENGLISH":
         fcx_user.language = 'en'
-    if message_lang == "ITALIAN":
+    if message_lang == "ITALIANO":
         fcx_user.language = "it"
     lang = fcx_user.language
     fcx_user.commit()
@@ -20,12 +20,5 @@ def set_langauge(message):
         "en": """Language is set to: English 🇬🇧""",
         "it": """La lingua è impostata su: Italian 🇮🇹"""
     }
-    bot.send_message(
-        chat_id,
-        text=set_lang_text[lang],
-        reply_markup=dashboard[lang]
-    )
-    # take user back to start
-    if fcx_user.is_new_user:
-        import starts
-        starts.start(message)
+    import starts
+    starts.start(message)
