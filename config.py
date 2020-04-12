@@ -29,14 +29,14 @@ keys = types.ReplyKeyboardMarkup()
 force_r = types.ForceReply()
 
 select_lang_markup = [
-    ["English  🇬🇧", "Italian  🇮🇹"]
+    ["English  🇬🇧", "Italiano  🇮🇹"]
 ]
 
 
 fcx_markup = {
 
 "en": [
-    ["Balances BTC"],
+    ["Balance BTC"],
     ["🏦 Deposit", "🏧 Withdrawal"],
     ["💵 Reinvest", "📜 Transactions"],
     ["⛳ Team", "🇬🇧 Language", "🤝 Support"]

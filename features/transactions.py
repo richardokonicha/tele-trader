@@ -40,47 +40,36 @@ def transaction(message):
     text_payout = listToString(payouts)
     text_commissions = listToString(commissions)
             
-
     text_info = {
         "en": f"""
 
-Deposits:
+<b>Deposits:</b>
 .....  
 {text_deposit}
-
-
-Payouts:
+<b>Payouts:</b>
 .....
 {text_payout}
-
-
-Reinvestments:
+<b>Reinvestments:</b>
 ......
 {text_reinvestments}
-
-Commissions:
+<b>Commissions:</b>
 .....
 {text_commissions}
 
         """,
         "it": f"""
-Depositi:
+<b>Depositi:</b>
 .....
 {text_deposit}
-
-
-Pagamenti:
+<b>Pagamenti:</b>
 .....
 {text_payout}
-
-Reinvestimenti:
+<b>Reinvestimenti:</b>
 ......
 {text_reinvestments}
-
-Commissioni:
+<b>Commissioni:</b>
 .....
 {text_commissions}
-
 
         """
         }

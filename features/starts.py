@@ -10,7 +10,7 @@ def start(message):
     name = message.from_user.first_name
     select_prefered_lang = """
 Please select your language
-Seleziona la tua lingua preferita
+Per favore scelga la sua lingua
     """
     welcome_text = {
 
@@ -37,7 +37,6 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                                 """
             }
     fcx_user = db.User.get_user(user_id)
-
     if fcx_user is not None:
         lang = fcx_user.language
         if lang == None or lang not in ['en', 'it']:
@@ -47,10 +46,14 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                 reply_markup=lang_keys,
                 parse_mode="HTML"
             )
-            # show_languages.show_language(message)
             fcx_user.commit()
         else:
-            dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+            fcx_markup_balances = {
+                        "en": f"Balance  {fcx_user.account_balance} BTC",
+                        "it": f"Bilance  {fcx_user.account_balance} BTC"
+                        }
+            dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
+
             bot.send_message(
                 chat_id,
                 text=welcome_text[lang],
@@ -58,8 +61,6 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                 parse_mode="HTML"
                 )
     else:
-        # for new users only
-        
         fcx_user = db.User(
             name=name,
             user_id=user_id
@@ -72,12 +73,3 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
             reply_markup=lang_keys,
             parse_mode="HTML"
             )
-
-        # show_languages.show_language(message)
-        # bot.send_message(
-        #     chat_id,
-        #     text=welcome_text[lang],
-        #     reply_markup=dashboard[lang],
-        #     parse_mode="HTML"
-        #     )
-        # lang = fcx_user.language
