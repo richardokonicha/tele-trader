@@ -7,9 +7,28 @@ from datetime import datetime, timedelta
 # connect engine to the database 
 
 
+
+# connect engine to the database 
+
+# export DATABASE_URL=postgres://$(whoami)
+
+# DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/books'
+# Base.metadata.drop_all(engine)
+
+import os
+import psycopg2
+
+# DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE_URI = 'postgres+psycopg2://reechee:reechee@localhost:5432'
+
+SQLITE = 'sqlite:///database/database.db'
+
+
 Session = sessionmaker()
 
-engine = create_engine('sqlite:///database/database.db', echo=True, connect_args={'check_same_thread': False})
+# engine = create_engine(DATABASE_URI, echo=True, connect_args={'check_same_thread': False})
+engine = create_engine(DATABASE_URI, echo=True)
+
 
 Session.configure(bind=engine)
 
@@ -25,7 +44,7 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer)
+    user_id = Column(Integer,  unique=True)
     name = Column(String, nullable=False)
     language = Column(String)
     registered_date = Column(String)
@@ -38,7 +57,7 @@ class User(Base):
     pending_investment = Column(Integer)
     active_reinvestment = Column(Integer)
 
-    transactions = relationship("Transactions", backref="user")
+    transactions = relationship("Transactions", uselist=True, backref="user")
 
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
@@ -97,7 +116,7 @@ class Transactions(Base):
     start_date = Column(String)
 
     balance = Column(Integer)
-    # user = relationship("User", back_populates="transaction")
+    # users = relationship("User",uselist=True, back_populates="transaction")
 
     def __init__(
         self,
