@@ -26,6 +26,11 @@ def webhook():
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
 
+@server.route('/')
+def index():
+    url=TEST_URL
+    return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
+
 # bot.remove_webhook()
 # bot.polling()
 
