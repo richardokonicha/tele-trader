@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update
 from sqlalchemy.ext.declarative import declarative_base
+from settings import DATABASE_URL
 
 
 # connect engine to the database 
@@ -20,12 +21,6 @@ from sqlalchemy.ext.declarative import declarative_base
 # DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
 # engine = create_engine(DATABASE_URI, echo=True, connect_args={'check_same_thread': False})
 
-try:
-    
-    DATABASE_URL = os.environ['DATABASE_URL']
-except KeyError:
-    DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
-    
 
 # except KeyError:
 #     DATABASE_URI = 'postgres+psycopg2://postgres:postgres@localhost:5432'
