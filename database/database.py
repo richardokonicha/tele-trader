@@ -1,43 +1,62 @@
+import os
+import psycopg2
+from datetime import datetime, timedelta
+
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime, timedelta
-
-
-# connect engine to the database 
-
 
 
 # connect engine to the database 
 
 # export DATABASE_URL=postgres://$(whoami)
-
-# DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/books'
+# postgres://reechee
+# DATABASE_URL='postgres://reechee'.split(":")
+# DATABASE_URI_VARI = 'postgres+psycopg2://postgres:postgres@localhost:5432'
 # Base.metadata.drop_all(engine)
 
-import os
-import psycopg2
-
-# DATABASE_URL = os.environ['DATABASE_URL']
-DATABASE_URI = 'postgres+psycopg2://reechee:reechee@localhost:5432'
-
-SQLITE = 'sqlite:///database/database.db'
-
-
-Session = sessionmaker()
-
+# DATABASE_URI = 'postgres+psycopg2://reechee:reechee@localhost:5432'
+# SQLITE = 'sqlite:///database/database.db'
+# DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
 # engine = create_engine(DATABASE_URI, echo=True, connect_args={'check_same_thread': False})
-engine = create_engine(DATABASE_URI, echo=True)
 
+try:
+    
+    DATABASE_URL = os.environ['DATABASE_URL']
+except KeyError:
+    DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
+    
 
+# except KeyError:
+#     DATABASE_URI = 'postgres+psycopg2://postgres:postgres@localhost:5432'
+# export DATABASE_URL='postgres+psycopg2://postgres:postgres@localhost:5432'
+
+db_url = DATABASE_URL.split(":")
+DATABASE_URI_VAR =f'postgres+psycopg2:{db_url[1]}:{db_url[2]}:{db_url[3]}'
+Session = sessionmaker()
+engine = create_engine(DATABASE_URI_VAR, echo=True)
 Session.configure(bind=engine)
-
-
 session = Session()
-# declare a mapping 
-
 Base = declarative_base()
-# Base.metadata.create_all(engine)
+
+
+class Setup:
+    # @classmethod
+    def activate_db():
+        Base.metadata.create_all(engine)
+        return
+
+    # @classmethod
+    def test_users():
+        test_user = User(user_id=7878, name="tester_org")
+        test_user.commit()
+        test_transact = Transactions(user_id=7878, transaction_type="withdrawal", amount=0.5)
+        test_transact.commit()
+        return
+
+
+
+
 
 #  create a schema
 class User(Base):
@@ -50,7 +69,7 @@ class User(Base):
     registered_date = Column(String)
     is_new_user = Column(Boolean)
     last_visted = Column(String)
-    wallet_address = Column(Integer)
+    wallet_address = Column(String)
 
     account_balance = Column(Integer)
     active_investment = Column(Integer)
@@ -163,3 +182,6 @@ class Transactions(Base):
 
     def __repr__(self):
         return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"
+
+
+Base.metadata.create_all(engine)
