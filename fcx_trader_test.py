@@ -15,9 +15,9 @@ def getMessage():
 
 
 
-@server.route("/")
-def pay():
-    return "This is the fcx trading bot you can reach me @FCX_trading_bot on telegram"
+# @server.route("/")
+# def pay():
+#     return "This is the fcx trading bot you can reach me @FCX_trading_bot on telegram"
 
 @server.route('/hook')
 def webhook():
@@ -28,7 +28,7 @@ def webhook():
 
 @server.route('/')
 def index():
-    url=TEST_URL
+    url=PROD_URL
     return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
 
 # bot.remove_webhook()
