@@ -57,3 +57,8 @@ else:
 # btc addre
 # 1BoatSLRHtKNngkdXEeobR76b53LETtpyT
 # regex_address = '^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$'
+
+
+# alter user postgres password 'postgres';
+
+# PGUSER=postgres PGPASSWORD=password heroku pg:pull HEROKU_POSTGRESQL_MAGENTA mylocaldb --app sushi
