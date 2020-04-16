@@ -88,7 +88,7 @@ def wallet_address_confirmation(message):
 You're about to set your bitcoin wallet address to : 
 <strong>{wallet_address}</strong>
             """,
-            "it ": f"""
+            "it": f"""
 Stai per impostare l'indirizzo del tuo portafoglio bitcoin su : 
 <strong>{wallet_address}</strong>
             """
