@@ -5,14 +5,13 @@ alchemy.py
 __pycache__[*]+.pyc
 core.py
 __pycache__
-settings.py
 database/database.json
 database/database.json
 extras/test.http
 database/database2.db
 database/database1.db
 # database/database.db
-settings.py
+# settings.pygit
 extras/test_t.py
 database/test.py
 database/test.py
