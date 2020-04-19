@@ -3,10 +3,9 @@ import psycopg2
 from datetime import datetime, timedelta
 
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update
+from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update, DateTime, Numeric
 from sqlalchemy.ext.declarative import declarative_base
-from settings import DATABASE_URL
-
+from settings import engine
 
 # connect engine to the database 
 
@@ -17,7 +16,6 @@ from settings import DATABASE_URL
 # Base.metadata.drop_all(engine)
 
 # DATABASE_URI = 'postgres+psycopg2://reechee:reechee@localhost:5432'
-# SQLITE = 'sqlite:///database/database.db'
 # DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
 # engine = create_engine(DATABASE_URI, echo=True, connect_args={'check_same_thread': False})
 
@@ -26,10 +24,14 @@ from settings import DATABASE_URL
 #     DATABASE_URI = 'postgres+psycopg2://postgres:postgres@localhost:5432'
 # export DATABASE_URL='postgres+psycopg2://postgres:postgres@localhost:5432'
 
-db_url = DATABASE_URL.split(":")
-DATABASE_URI_VAR =f'postgres+psycopg2:{db_url[1]}:{db_url[2]}:{db_url[3]}'
+# db_url = DATABASE_URL.split(":")
+# DATABASE_URI_VAR =f'postgres+psycopg2:{db_url[1]}:{db_url[2]}:{db_url[3]}'
+# engine = create_engine(DATABASE_URI_VAR, echo=True)
+
+# SQLITE = 'sqlite:///database/database.db'
+# engine = create_engine(SQLITE, echo=True, connect_args={'check_same_thread': False})
+
 Session = sessionmaker()
-engine = create_engine(DATABASE_URI_VAR, echo=True)
 Session.configure(bind=engine)
 session = Session()
 Base = declarative_base()
@@ -49,10 +51,6 @@ class Setup:
         test_transact.commit()
         return
 
-
-
-
-
 #  create a schema
 class User(Base):
     __tablename__ = 'user'
@@ -70,9 +68,7 @@ class User(Base):
     active_investment = Column(Integer)
     pending_investment = Column(Integer)
     active_reinvestment = Column(Integer)
-
     transactions = relationship("Transactions", uselist=True, backref="user")
-
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
         self.user_id = user_id
@@ -80,7 +76,6 @@ class User(Base):
         self.is_admin = is_admin
         self.is_new_user = is_new_user
         self.registered_date = datetime.now().isoformat()
-
         self.account_balance = 0
         self.active_investment = 0
         self.active_reinvestment = 0

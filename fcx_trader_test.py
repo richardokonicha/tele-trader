@@ -1,6 +1,7 @@
 from flask import Flask, request
 import os
 from config import *
+from settings import URL
 
 
 server = Flask(__name__)
@@ -21,15 +22,24 @@ def getMessage():
 
 @server.route('/hook')
 def webhook():
-    url=PROD_URL
+    url=URL
     bot.remove_webhook()
     bot.set_webhook(url + TOKEN)
     return f"Webhook set to {url}"
 
-@server.route('/')
+@server.route('/pay', methods=['POST'])
 def index():
-    url=PROD_URL
+    url=URL
+    requests=request
+    value = requests.values
+    print(request)
     return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
+
+
+# @server.route('/pay', methods=['GET'])
+# def index():
+#     url=URL
+#     return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
 
 # bot.remove_webhook()
 # bot.polling()

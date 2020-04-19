@@ -5,19 +5,16 @@ from telebot import types
 from functions import *
 from coinpayment import CoinPayments
 from datetime import datetime
-import calendar
-
 from database import database as db
-
-from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID, TEST_URL, PROD_URL
-from settings import TOKEN_PRODUCTION as TOKEN
+from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID
+from settings import TOKEN
 # from settings import TOKEN_TEST as TOKEN
 
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
 bot = telebot.TeleBot(TOKEN, threaded=True)
 
-payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY)
+payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY, ipn_url="https://a307ef5b.ngrok.io/pay")
 
 
 ######### keyboard markup below here #######
