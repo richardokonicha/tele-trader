@@ -59,9 +59,7 @@ I fondi appariranno dopo la prima conferma della Blockchain.
     bot.send_message(
         chat_id, text=arrival_text.get(lang)
     )
-    payment_details = payment_client.get_callback_address(
-        params={'currency': 'BTC'})
-
+    payment_details = payment_client.create_transaction({"amount":1, "currency1":"LTCT", "currency2":"LTCT"})
     try:
 
         text = payment_details["result"]["address"]
