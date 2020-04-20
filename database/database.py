@@ -123,8 +123,15 @@ class Transactions(Base):
     wallet_address = Column(String)
     date = Column(String)
     start_date = Column(String)
-
     balance = Column(Integer)
+    # deposit
+    dp_txn_id = Column(String, unique=True)
+    dp_address = Column(String)
+    dp_address_timeout = Column(Integer)
+    dp_qrcode_url = Column(String)
+    dp_status = Column(String)
+    dp_status_text = Column(String)
+
     # users = relationship("User",uselist=True, back_populates="transaction")
 
     def __init__(
@@ -160,6 +167,10 @@ class Transactions(Base):
         else:
             return None
     
+    @classmethod
+    def get_txn_id(cls, txn_id):
+        return session.query(Transactions).filter_by(dp_txn_id=txn_id).first()
+    
     def commit(self):
         session.add(self)
         session.commit()
@@ -174,4 +185,27 @@ class Transactions(Base):
         return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"
 
 
+
+# class Deposits(Base):
+#     __tablename__="deposit"
+#     id = Column(Integer, primary_key=True)
+#     deposit_txn_id = Column(String)
+#     amount = Column(Integer)
+#     address = Column(String)
+#     timeout = Column(Integer)
+#     qrcode_url = Column(String)
+#     status = Column(String)
+#     date = Column(DateTime)
+
+
+
+#     def commit(self):
+#         session.add(self)
+#         session.commit()
+    
+#     def __repr__(self):
+#         return f"Deposit {self.txn_id} amount {self.amount}"
+
+
 Base.metadata.create_all(engine)
+

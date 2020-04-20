@@ -16,3 +16,4 @@ extras/test_t.py
 database/test.py
 database/test.py
 extras/ipns.py
+database/database.db

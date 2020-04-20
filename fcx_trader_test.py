@@ -31,7 +31,32 @@ def webhook():
 def index():
     url=URL
     requests=request
-    value = requests.values
+    try:
+        
+        value = requests.values
+        txn_id = value["txn_id"]
+        fcx_dp = db.Transactions.get_txn_id(txn_id)
+        if fcx_dp != None:
+            fcx_dp.status_text = value["status_text"]
+            fcx_dp.status = value["status"]
+            fcx_dp.commit()
+            text=f"""
+Created Transaction
+Transaction ID: <b>{txn_id}</b>
+Amount : <b>{value['amount1']}</b>
+Says: <b>{value['status_text']}</b>
+            
+            """
+            bot.send_message(
+                fcx_dp.user.user_id,
+                text=text,
+                reply_markup=dashboard[fcx_dp.user.language]
+            )
+        else:
+            pass
+    except KeyError:
+        pass
+
     print(request)
     return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
 
