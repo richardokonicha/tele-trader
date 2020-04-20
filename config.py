@@ -7,14 +7,14 @@ from coinpayment import CoinPayments
 from datetime import datetime
 from database import database as db
 from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID
-from settings import TOKEN
+from settings import TOKEN, URL
 # from settings import TOKEN_TEST as TOKEN
 
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
 bot = telebot.TeleBot(TOKEN, threaded=True)
 
-payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY, ipn_url="https://a307ef5b.ngrok.io/pay")
+payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY, ipn_url=URL + "pay")
 
 
 ######### keyboard markup below here #######
