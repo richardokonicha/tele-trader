@@ -4,27 +4,36 @@ from config import *
 @bot.message_handler(
     func=lambda message: message.content_type == 'text'
     and ( 
-        bool(re.search(r'^Team$', message.text, re.IGNORECASE))
-         or  bool(re.search(r'^Squadra$', message.text, re.IGNORECASE))
+        bool(re.search(r'Team$', message.text, re.IGNORECASE))
+         or  bool(re.search(r'Squadra$', message.text, re.IGNORECASE))
         )
 )
 def team(message):
-    chat_id = message.chat.id
-    user_object = get_user(message)
-    balance = user_object["investment"]['balance']
-    lang = user_object["lang"]
-    withdrawal_minimum_amount = 0.002
-    text_info = {
-        "ENGLISH": f"""
+        user_id = message.from_user.id
+        # chat_id = message.chat.id
+        fcx_user = db.User.get_user(user_id)
+        lang = fcx_user.language
+#     user_object = get_user(message)
+#     balance = user_object["investment"]['balance']
+#     lang = user_object["lang"]
+        withdrawal_minimum_amount = 0.002
+        text_info = {
+                "en": f"""
 Invitation link to share with your friends:
+https://t.me/FCX_Trading_Bot?start={user_id}
+https://t.me/fcxtestcasebot?start={user_id}
+
+
         """,
-        "ITALIAN": f"""
+        "it": f"""
 Link di invito da condividere con i Vostri amici:
+https://t.me/FCX_Trading_Bot?start={user_id}
+
         """
         }
         
-    text_refferal = {
-        "ENGLISH": """
+        text_refferal = {
+        "en": """
 
 Refferal system:
 1. Level 5%
@@ -46,7 +55,7 @@ xx.xxxxxx BTC
 
 
         """,
-        "ITALIAN": """
+        "it": """
 
 Livelli Bonus:
 1. Livello 5%
@@ -68,15 +77,15 @@ Guadagno totale della squadra:
 xx.xxxxxx BTC
         """
     }
-    text_enter_commission = {
-        "ENGLISH": """
+        text_enter_commission = {
+        "en": """
 Your commissions will be added automatically to your main account balance each time a team member makes a deposit or a reinvestment.
         """,
-        "ITALIAN": """
+        "it": """
 Le Vostre commissioni saranno aggiunte automaticamente al saldo del Vostro conto principale ogni volta che un membro del team effettua un deposito o un reinvestimento. 
         """
-    }
-    bot.send_message( chat_id, text=text_info[lang] + text_refferal[lang] + text_enter_commission[lang],
-        reply_markup=dashboard.get(lang), parse_mode="html"
-        )
+        }
+        bot.send_message(user_id, text=text_info[lang] + text_refferal[lang] + text_enter_commission[lang],
+                reply_markup=dashboard.get(lang), parse_mode="html"
+                )
 
