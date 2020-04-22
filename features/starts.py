@@ -13,7 +13,6 @@ Please select your language
 Per favore scelga la sua lingua
     """
     welcome_text = {
-
             "en": """
                             <b>Welcome to FCX Trading Bot</b>
 
@@ -23,8 +22,6 @@ FCX Trading Bot profits depends on the global market situation and there is no g
 
 Deposits are being handled at the highest security level according to a modern portfolio management serving the FCX Trading Bot.
                                     """,
-
-
             "it": """
                             <b>Benvenuti a FCX Trading Bot </b>
 
@@ -53,19 +50,42 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
                         "it": f"Bilance  {fcx_user.account_balance} BTC"
                         }
             dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
-
             bot.send_message(
                 chat_id,
                 text=welcome_text[lang],
                 reply_markup=dashboard[lang],
                 parse_mode="HTML"
                 )
+            if fcx_user.referral:
+                referral_id = fcx_user.referral
+                fcx_referral = db.User.get_user(referral_id)
+                referral_name = fcx_referral.name
+                referred = {
+                        "en": f"You were referred by {referral_name}",
+                        "it": f"You were referred by {referral_name}"
+                }
+                bot.send_message(
+                    chat_id,
+                    text=referred[lang],
+                    reply_markup=dashboard[lang],
+                    parse_mode="HTML"
+                    )
+            else:
+                pass
     else:
+        try:
+            referral = message.text.split(' ')[1]
+        except (IndexError, ValueError) as e:
+            referral = None
+
+        if not db.User.exists_id(int(referral)):
+            referral = "Invalid referral"
         fcx_user = db.User(
             name=name,
             user_id=user_id
         )
         fcx_user.is_new_user = True
+        fcx_user.referral = referral
         fcx_user.commit()
         bot.send_message(
             chat_id,
