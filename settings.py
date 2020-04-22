@@ -30,7 +30,7 @@ else:
     TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 
     # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-    URL = "https://b039ca19.ngrok.io/"
+    URL = "https://d7f36641.ngrok.io/"
     DATABASE_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432'
     ADMIN_ID = 1053579181
 

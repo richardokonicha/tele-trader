@@ -59,6 +59,7 @@ class User(Base):
     user_id = Column(Integer,  unique=True)
     name = Column(String, nullable=False)
     language = Column(String)
+    referral = Column(String)
     registered_date = Column(String)
     is_new_user = Column(Boolean)
     last_visted = Column(String)
@@ -83,6 +84,10 @@ class User(Base):
         
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
+
+    @classmethod
+    def exists_id(cls, user_id):
+        return session.query(exists().where(cls.user_id == user_id)).scalar()
 
     @classmethod
     def get_user(cls, user_id):
