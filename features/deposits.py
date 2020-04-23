@@ -52,7 +52,9 @@ def generate_address(message):
             bot.send_message(
                 chat_id, text=arrival_text.get(lang)
             )
-            payment_details = payment_client.create_transaction({"amount":amount, "currency1":"LTCT", "currency2":"LTCT"})
+            # payment_details = payment_client.create_transaction({"amount":amount, "currency1":"LTCT", "currency2":"LTCT"})
+            payment_details = payment_client.create_transaction({"amount":amount, "currency1":"BTC", "currency2":"BTC"})
+
             try:
                 pd = payment_details["result"]
                 fcx_dp = db.Transactions(
