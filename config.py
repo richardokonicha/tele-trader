@@ -5,6 +5,7 @@ from telebot import types
 from functions import *
 from coinpayment import CoinPayments
 from datetime import datetime
+from decimal import *
 from database import database as db
 from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID
 from settings import TOKEN, URL

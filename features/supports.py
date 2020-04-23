@@ -8,10 +8,9 @@ from config import *
         )
 )
 def support(message):
-    chat_id = message.chat.id
-    user_object = get_user(message)
-    balance = user_object["investment"]['balance']
-    lang = user_object["lang"]
+    user_id = message.from_user.id
+    fcx_user = db.User.get_user(user_id)
+    lang = fcx_user.language
     text_info = {
         "ENGLISH": f"""
 Contact:
@@ -25,7 +24,7 @@ Contatto:
         }
 
     bot.send_message(
-        chat_id, text=text_info[lang],
+        user_id, text=text_info[lang],
         reply_markup=dashboard.get(lang), parse_mode="html"
         )
 
