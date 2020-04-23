@@ -19,3 +19,4 @@ extras/ipns.py
 database/database.db
 database/database.db
 features/FCX.code-workspace
+settings.py
