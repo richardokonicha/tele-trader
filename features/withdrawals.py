@@ -10,7 +10,7 @@ def wallet_amount_confirmation(message):
     lang = fcx_user.language
     amount = message.text
     try:
-        amount = float(amount)
+        amount = Decimal(amount)
         if amount > balance:
             insufficient_balance_text = {
                 "en": "You can't withdrawal a value greater than your account balance try again",
@@ -58,7 +58,7 @@ indirizzo di pagamento: <b>{wallet_address}</b>
             except KeyError:
                 bot.send_message(chat_id, text="Invalid wallet address", parse_mode="html")
                 set_wallet_address(message)
-    except ValueError:
+    except (ValueError, InvalidOperation) as e:
         invalid_amount = {
             "en": "Invalid amount please insert number",
             "it": "Importo non valido inserire il numero"

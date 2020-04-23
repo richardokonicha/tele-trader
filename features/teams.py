@@ -10,31 +10,25 @@ from config import *
 )
 def team(message):
         user_id = message.from_user.id
-        # chat_id = message.chat.id
         fcx_user = db.User.get_user(user_id)
         lang = fcx_user.language
-#     user_object = get_user(message)
-#     balance = user_object["investment"]['balance']
-#     lang = user_object["lang"]
+        bot_info = bot.get_me()
+        bot_name = bot_info.username
         withdrawal_minimum_amount = 0.002
         text_info = {
                 "en": f"""
 Invitation link to share with your friends:
-https://t.me/FCX_Trading_Bot?start={user_id}
-https://t.me/fcxtestcasebot?start={user_id}
-
-
+https://t.me/{bot_name}?start={user_id}
         """,
         "it": f"""
 Link di invito da condividere con i Vostri amici:
-https://t.me/FCX_Trading_Bot?start={user_id}
+https://t.me/{bot_name}?start={user_id}
 
         """
         }
         
         text_refferal = {
         "en": """
-
 Refferal system:
 1. Level 5%
 2. Level 3%
@@ -52,11 +46,8 @@ Team volume:
 
 Total team earnings:
 xx.xxxxxx BTC
-
-
         """,
         "it": """
-
 Livelli Bonus:
 1. Livello 5%
 2. Livello 3%
@@ -72,11 +63,10 @@ Totale della squadra:
 2. Livello 0,557777 BTC
 3. Livello 0,236675 BTC
 
-
 Guadagno totale della squadra:
 xx.xxxxxx BTC
         """
-    }
+        }
         text_enter_commission = {
         "en": """
 Your commissions will be added automatically to your main account balance each time a team member makes a deposit or a reinvestment.
@@ -85,7 +75,11 @@ Your commissions will be added automatically to your main account balance each t
 Le Vostre commissioni saranno aggiunte automaticamente al saldo del Vostro conto principale ogni volta che un membro del team effettua un deposito o un reinvestimento. 
         """
         }
-        bot.send_message(user_id, text=text_info[lang] + text_refferal[lang] + text_enter_commission[lang],
-                reply_markup=dashboard.get(lang), parse_mode="html"
+        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        bot.send_message(
+                user_id,
+                text=text_info[lang] + text_refferal[lang] + text_enter_commission[lang],
+                reply_markup=dashboard.get(lang),
+                parse_mode="html"
                 )
 

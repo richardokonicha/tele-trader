@@ -34,7 +34,7 @@ def verify_reinvest(message):
                         }
                 dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
                 try:
-                        reinvestment_amount = float(message.text)
+                        reinvestment_amount = Decimal(message.text)
                         if reinvestment_amount > balance:
                                 text_insufficient = {
                                         "en": "You have insufficient account balance",

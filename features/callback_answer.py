@@ -38,7 +38,7 @@ Ora puoi effettuare un <b>prelievo</b>
     elif call.data == "confirm_order":
         withdrawal_order = call.message.text
         amount_text, address_text = withdrawal_order.split('\n')
-        amount = float(amount_text.split(' ')[-1])
+        amount = Decimal(amount_text.split(' ')[-1])
         wallet_address = address_text.split(' ')[-1]
         fcx_user.account_balance = fcx_user.account_balance - amount
         fcx_transact = db.Transactions(
@@ -88,7 +88,7 @@ Il tuo nuovo saldo è {fcx_user.account_balance}"""
         ##### REINVEST #####
     elif call.data == "confirm_reinvestment":
         amount = call.message.text.split(":")[-1]
-        amount = float(amount.split(" ")[0])
+        amount = Decimal(amount.split(" ")[0])
         if amount > fcx_user.account_balance:
             text_insufficient = {
                     "en": "You have insufficient account balance",

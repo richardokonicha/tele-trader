@@ -1,9 +1,10 @@
 import os
 import psycopg2
 from datetime import datetime, timedelta
+from decimal import *
 
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update, DateTime, Numeric
+from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignKey, exists, update, DateTime, Numeric, DECIMAL
 from sqlalchemy.ext.declarative import declarative_base
 from settings import engine
 
@@ -65,10 +66,10 @@ class User(Base):
     last_visted = Column(String)
     wallet_address = Column(String)
 
-    account_balance = Column(Integer)
-    active_investment = Column(Integer)
-    pending_investment = Column(Integer)
-    active_reinvestment = Column(Integer)
+    account_balance = Column(DECIMAL(8,6))
+    active_investment = Column(DECIMAL(8,6))
+    pending_investment = Column(DECIMAL(8,6))
+    active_reinvestment = Column(DECIMAL(8,6))
     transactions = relationship("Transactions", uselist=True, backref="user")
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
@@ -77,10 +78,10 @@ class User(Base):
         self.is_admin = is_admin
         self.is_new_user = is_new_user
         self.registered_date = datetime.now().isoformat()
-        self.account_balance = 0
-        self.active_investment = 0
-        self.active_reinvestment = 0
-        self.pending_investment = 0
+        self.account_balance = Decimal()
+        self.active_investment = Decimal()
+        self.active_reinvestment = Decimal()
+        self.pending_investment = Decimal()
         
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
@@ -124,11 +125,11 @@ class Transactions(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user.user_id"))
     transaction_type = Column(String)
-    amount = Column(Integer)
+    amount = Column(DECIMAL(8,6))
     wallet_address = Column(String)
     date = Column(String)
     start_date = Column(String)
-    balance = Column(Integer)
+    balance = Column(DECIMAL(8,6))
     # deposit
     dp_txn_id = Column(String, unique=True)
     dp_address = Column(String)
