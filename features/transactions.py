@@ -19,68 +19,79 @@ def transaction(message):
     payouts = []
     reinvestments = []
     commissions = []
-    for value in transactions:
-        if value.transaction_type=="deposit":
-            deposits.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
-        if value.transaction_type=="withdrawal":
-            payouts.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
-        if value.transaction_type=="reinvestment":
-            reinvestments.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
-        if value.transaction_type=="commissions":
-            commissions.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
-
-    def listToString(s):
-        str1 = """"""
-        for ele in s:
-            str1 += (ele+"""
-""")
-        return str1  
-    text_deposit = listToString(deposits)
-    text_reinvestments = listToString(reinvestments)
-    text_payout = listToString(payouts)
-    text_commissions = listToString(commissions)
+    try:
             
-    text_info = {
-        "en": f"""
+        for value in transactions:
+            if value.transaction_type=="deposit":
+                deposits.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
+            if value.transaction_type=="withdrawal":
+                payouts.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
+            if value.transaction_type=="reinvestment":
+                reinvestments.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
+            if value.transaction_type=="commissions":
+                commissions.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
 
-<b>Deposits:</b>
-.....  
-{text_deposit}
-<b>Payouts:</b>
-.....
-{text_payout}
-<b>Reinvestments:</b>
-......
-{text_reinvestments}
-<b>Commissions:</b>
-.....
-{text_commissions}
+        def listToString(s):
+            str1 = """"""
+            for ele in s:
+                str1 += (ele+"""
+    """)
+            return str1  
+        text_deposit = listToString(deposits)
+        text_reinvestments = listToString(reinvestments)
+        text_payout = listToString(payouts)
+        text_commissions = listToString(commissions)
+                
+        text_info = {
+            "en": f"""
 
-        """,
-        "it": f"""
-<b>Depositi:</b>
-.....
-{text_deposit}
-<b>Pagamenti:</b>
-.....
-{text_payout}
-<b>Reinvestimenti:</b>
-......
-{text_reinvestments}
-<b>Commissioni:</b>
-.....
-{text_commissions}
+    <b>Deposits:</b>
+    .....  
+    {text_deposit}
+    <b>Payouts:</b>
+    .....
+    {text_payout}
+    <b>Reinvestments:</b>
+    ......
+    {text_reinvestments}
+    <b>Commissions:</b>
+    .....
+    {text_commissions}
 
-        """
-        }
+            """,
+            "it": f"""
+    <b>Depositi:</b>
+    .....
+    {text_deposit}
+    <b>Pagamenti:</b>
+    .....
+    {text_payout}
+    <b>Reinvestimenti:</b>
+    ......
+    {text_reinvestments}
+    <b>Commissioni:</b>
+    .....
+    {text_commissions}
 
-    fcx_markup_balances = {
-                "en": f"Balances  {fcx_user.account_balance} BTC",
-                "it": f"Bilance  {fcx_user.account_balance} BTC"
-                }
-    dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
-    bot.send_message(
-        chat_id, text=text_info[lang],
-        reply_markup=dashboard.get(lang), parse_mode="html"
+            """
+            }
+
+        fcx_markup_balances = {
+                    "en": f"Balances  {fcx_user.account_balance} BTC",
+                    "it": f"Bilance  {fcx_user.account_balance} BTC"
+                    }
+        dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang]
+        bot.send_message(
+            chat_id, text=text_info[lang],
+            reply_markup=dashboard.get(lang), parse_mode="html"
+            )
+
+    except TypeError:
+        bot.send_message(
+            chat_id,
+            text="No Transactions yet",
+            reply_markup=dashboard.get(lang), parse_mode="html"
+
+
         )
 

@@ -50,7 +50,8 @@ Says: <b>{value['status_text']}</b>
             bot.send_message(
                 fcx_dp.user.user_id,
                 text=text,
-                reply_markup=dashboard[fcx_dp.user.language]
+                reply_markup=dashboard[fcx_dp.user.language],
+                parse_mode="html"
             )
         else:
             pass
