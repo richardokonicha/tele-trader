@@ -75,11 +75,11 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
     else:
         try:
             referral = message.text.split(' ')[1]
+            if not db.User.exists_id(int(referral)):
+                referral = "Invalid referral"
         except (IndexError, ValueError) as e:
             referral = None
 
-        if not db.User.exists_id(int(referral)):
-            referral = "Invalid referral"
         fcx_user = db.User(
             name=name,
             user_id=user_id

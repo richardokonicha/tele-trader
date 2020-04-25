@@ -8,12 +8,12 @@ PRIVATE_KEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
 Merchant_ID = "c4baf6ef23be73a2da7fa0531b2df323"
 IPN_secret = "coinpaymentspeaks"
 ADMIN_ID = 1053579181
-DEBUG = True
+DEBUG = not True
 
 if DEBUG==False:
     print("\033[1;35;40m Running in production mode")
     TOKEN = "1137661512:AAEig943WBK2aCBhlrDxgpN6Tl__lpxOMUY" #FCX trading bot
-    URL = 'https://fcx-bot.herokuapp.com/'
+    URL = 'https://fcx-trading.herokuapp.com/'
     try:
         import os
         DATABASE_URL = os.environ['DATABASE_URL']
@@ -30,10 +30,11 @@ else:
     TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 
     # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-    URL = "https://d7f36641.ngrok.io/"
+    URL = "https://f906f1e5.ngrok.io/"
     DATABASE_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432'
     ADMIN_ID = 1053579181
 
     SQLITE = 'sqlite:///database/database.db'
     engine = create_engine(SQLITE, echo=True, connect_args={'check_same_thread': False})
     print(engine)
+
