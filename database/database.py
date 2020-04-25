@@ -126,6 +126,7 @@ class Transactions(Base):
     user_id = Column(Integer, ForeignKey("user.user_id"))
     transaction_type = Column(String)
     amount = Column(DECIMAL(8,6))
+    recieved_amount = Column(DECIMAL(8,6))
     wallet_address = Column(String)
     date = Column(String)
     start_date = Column(String)
@@ -137,6 +138,10 @@ class Transactions(Base):
     dp_qrcode_url = Column(String)
     dp_status = Column(String)
     dp_status_text = Column(String)
+    status = Column(String)
+    
+
+
 
     # users = relationship("User",uselist=True, back_populates="transaction")
 

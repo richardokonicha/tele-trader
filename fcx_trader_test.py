@@ -36,14 +36,16 @@ def index():
         txn_id = value["txn_id"]
         fcx_dp = db.Transactions.get_txn_id(txn_id)
         if fcx_dp != None:
-            fcx_dp.status_text = value["status_text"]
+            fcx_dp.recieved_amount = Decimal(value.get('received_amount'))
+            fcx_dp.dp_status_text = value["status_text"]
             fcx_dp.status = value["status"]
             fcx_dp.commit()
             text=f"""
 Created Transaction
 Transaction ID: <b>{txn_id}</b>
+Address: <b>{fcx_dp.dp_address}</b>
 Amount : <b>{value['amount1']}</b>
-Says: <b>{value['status_text']}</b>
+Says: <b>{fcx_dp.dp_status_text}</b>
             """
             bot.send_message(
                 fcx_dp.user.user_id,
@@ -51,6 +53,26 @@ Says: <b>{value['status_text']}</b>
                 reply_markup=dashboard[fcx_dp.user.language],
                 parse_mode="html"
             )
+
+            # if value["status"]=="1":
+            #     text = f"Funds recieved you would be credited shortly"
+            #     bot.send_message(
+            #         fcx_dp.user.user_id,
+            #         text=text,
+            #         reply_markup=dashboard[fcx_dp.user.language],
+            #         parse_mode="html"
+            #     )
+
+            if value['status']=='100':
+                fcx_dp.user.balance = fcx_dp.user.balance + fcx_dp.recieved_amount
+                fcx_dp.commit()
+                text = f"You have been credited {fcx_dp.recieved_amount}"
+                bot.send_message(
+                    fcx_dp.user.user_id,
+                    text=text,
+                    reply_markup=dashboard[fcx_dp.user.language],
+                    parse_mode="html"
+                )
         else:
             pass
     except KeyError:
