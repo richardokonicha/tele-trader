@@ -22,21 +22,21 @@ def generate_address(message):
         }
         duration_text = {
             "en": """
-    Bitcoin Amount:
-    Min: 0.025 BTC
-    Max: 5 BTC
+Bitcoin Amount:
+Min: 0.025 BTC
+Max: 5 BTC
 
-    This address will be active for 4 hours.
-    Funds will show up after first blockchain confirmation.
-    """,
-            "it": """
-    Importo Bitcoin: 
-    Min. 0,025 BTC 
-    Max. 5 BTC
+This address will be active for 4 hours.
+Funds will show up after first blockchain confirmation.
+""",
+        "it": """
+Importo Bitcoin: 
+Min. 0,025 BTC 
+Max. 5 BTC
 
-    Questo indirizzo sarà attivo per 4 ore.
-    I fondi appariranno dopo la prima conferma della Blockchain.
-            
+Questo indirizzo sarà attivo per 4 ore.
+I fondi appariranno dopo la prima conferma della Blockchain.
+        
             """
         }
         if amount < 5:
@@ -53,7 +53,7 @@ def generate_address(message):
                 chat_id, text=arrival_text.get(lang)
             )
             # payment_details = payment_client.create_transaction({"amount":amount, "currency1":"LTCT", "currency2":"LTCT"})
-            payment_details = payment_client.create_transaction({"amount":amount, "currency1":"BTC", "currency2":"BTC"})
+            payment_details = payment_client.create_transaction({"amount":amount, "currency1":"LTCT", "currency2":"LTCT"})
 
             try:
                 pd = payment_details["result"]
@@ -74,6 +74,11 @@ def generate_address(message):
                     chat_id,
                     text=f"<strong>{text}</strong>",
                     parse_mode="html"
+                )
+                bot.send_photo(
+                    chat_id,
+                    photo=fcx_dp.dp_qrcode_url,
+                    caption="Scan QR",
                 )
                 bot.send_message(
                     chat_id,
