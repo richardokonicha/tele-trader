@@ -18,7 +18,8 @@ if DEBUG==False:
         import os
         DATABASE_URL = os.environ['DATABASE_URL']
     except KeyError:
-        DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
+        # DATABASE_URL="postgres://oilzaezgbpfuad:0c38dcf0bdd1cad9456aff15f7b6ae3cb076e5911dcbb5bf266afd5a3710e608@ec2-184-72-236-57.compute-1.amazonaws.com:5432/d3u443uoa0b5os"
+        DATABASE_URL="postgres://jiuyexwrlknkee:183e46190d220e36b4401f4d6d86549ba7107653bb62ddadec6bccecd02c366a@ec2-54-246-89-234.eu-west-1.compute.amazonaws.com:5432/daprusoucv4h82"
     db_url = DATABASE_URL.split(":")
 
     DATABASE_URI_VAR =f'postgres+psycopg2:{db_url[1]}:{db_url[2]}:{db_url[3]}'
