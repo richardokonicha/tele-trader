@@ -3,6 +3,7 @@ import hmac
 import hashlib
 import json
 from django.conf import settings, ImproperlyConfigured
+import requests
 
 
 class CoinPayments():
@@ -53,6 +54,18 @@ class CoinPayments():
 
         headers = {'hmac': sig}
 
+        proxy_host = "http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80"
+
+        proxyDict = {
+            'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80', 
+            'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80'
+            }
+
+
+        #  proxyDict = {
+        #      "http"  : os.environ.get('FIXIE_URL', ''), 
+        #      "https" : os.environ.get('FIXIE_URL', '')
+        #      }
         if request_method == 'get':
             req = urllib.request.Request(self.url, headers=headers)
         elif request_method == 'post':
@@ -63,6 +76,27 @@ class CoinPayments():
             status_code = response.getcode()
             response_body = response.read()
         except urllib.error.HTTPError as e:
+            status_code = e.getcode()
+            response_body = e.read()
+        return json.loads(response_body)
+
+
+    def irequest(self, request_method, **params):
+        encoded, sig = self.create_hmac(**params)
+        headers = {'hmac': sig}
+        proxyDict = {
+            'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80', 
+            'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80'
+            }
+
+        try:
+            if request_method == 'get':
+                reqs = requests.get(self.url, headers=headers, proxies=proxyDict)
+            elif request_method == 'post':
+                headers['Content-Type'] = 'application/x-www-form-urlencoded'
+                reqs = requests.post(self.url, data=encoded,  headers=headers, proxies=proxyDict)
+            response_body = reqs.text
+        except (requests.exceptions.ConnectionError, requests.exceptions.ProxyError) as e:
             status_code = e.getcode()
             response_body = e.read()
         return json.loads(response_body)
@@ -80,7 +114,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_basic_info(self, params=None):
         """
@@ -93,7 +127,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def rates(self, params=None):
         """
@@ -106,7 +140,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def balances(self, params=None):
         """
@@ -119,7 +153,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_deposit_address(self, params=None):
         """
@@ -132,7 +166,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_callback_address(self, params=None):
         """
@@ -147,7 +181,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def create_transfer(self, params=None):
         """
@@ -162,7 +196,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def create_withdrawal(self, params=None):
         """
@@ -176,7 +210,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def convert_coins(self, params=None):
         """
@@ -189,7 +223,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_withdrawal_history(self, params=None):
         """
@@ -202,7 +236,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_withdrawal_info(self, params=None):
         """
@@ -215,7 +249,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_conversion_info(self, params=None):
         """
@@ -228,7 +262,7 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
 
     def get_tx_info_multi(self, params=None):
         """
@@ -241,4 +275,4 @@ class CoinPayments():
                        'key': self.publicKey,
                        'version': self.version,
                        'format': self.format})
-        return self.request('post', **params)
+        return self.irequest('post', **params)
