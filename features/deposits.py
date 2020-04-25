@@ -67,7 +67,7 @@ I fondi appariranno dopo la prima conferma della Blockchain.
                 fcx_dp.dp_qrcode_url = pd["qrcode_url"]
                 fcx_dp.dp_status = pd["status_url"]
                 fcx_dp.dp_address = pd["address"]
-                fcx_dp.status = "created"
+                fcx_dp.status = "0"
                 fcx_dp.commit()
                 text = pd["address"]
                 bot.send_message(
