@@ -8,7 +8,7 @@ PRIVATE_KEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
 Merchant_ID = "c4baf6ef23be73a2da7fa0531b2df323"
 IPN_secret = "coinpaymentspeaks"
 ADMIN_ID = 1053579181
-DEBUG = not True
+DEBUG = True
 
 if DEBUG==False:
     print("\033[1;35;40m Running in production mode")
@@ -30,7 +30,7 @@ else:
     TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 
     # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-    URL = "https://b653e373.ngrok.io/"
+    URL = "https://f906f1e5.ngrok.io/"
     DATABASE_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432'
     ADMIN_ID = 1053579181
 
