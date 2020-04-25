@@ -20,3 +20,4 @@ database/database.db
 database/database.db
 features/FCX.code-workspace
 
+.env

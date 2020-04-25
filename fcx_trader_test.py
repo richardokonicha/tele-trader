@@ -32,7 +32,6 @@ def index():
     url=URL
     requests=request
     try:
-        
         value = requests.values
         txn_id = value["txn_id"]
         fcx_dp = db.Transactions.get_txn_id(txn_id)
@@ -45,7 +44,6 @@ Created Transaction
 Transaction ID: <b>{txn_id}</b>
 Amount : <b>{value['amount1']}</b>
 Says: <b>{value['status_text']}</b>
-            
             """
             bot.send_message(
                 fcx_dp.user.user_id,
