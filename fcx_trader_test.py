@@ -6,15 +6,12 @@ from settings import URL
 
 server = Flask(__name__)
 
-
 @server.route('/'+ TOKEN, methods=['POST'])
 def getMessage():
     request_object = request.stream.read().decode("utf-8")
     update_to_json = [telebot.types.Update.de_json(request_object)]
     bot.process_new_updates(update_to_json)
     return "got Message bro"
-
-
 
 # @server.route("/")
 # def pay():
@@ -38,7 +35,8 @@ def index():
         if fcx_dp != None:
             fcx_dp.recieved_amount = Decimal(value.get('received_amount'))
             fcx_dp.dp_status_text = value["status_text"]
-            fcx_dp.status = value["status"]
+            status = value['status']
+            fcx_dp.status = status
             fcx_dp.commit()
             text=f"""
 Created Transaction
@@ -53,20 +51,11 @@ Says: <b>{fcx_dp.dp_status_text}</b>
                 reply_markup=dashboard[fcx_dp.user.language],
                 parse_mode="html"
             )
-
-            # if value["status"]=="1":
-            #     text = f"Funds recieved you would be credited shortly"
-            #     bot.send_message(
-            #         fcx_dp.user.user_id,
-            #         text=text,
-            #         reply_markup=dashboard[fcx_dp.user.language],
-            #         parse_mode="html"
-            #     )
-
-            if value['status']=='100':
-                fcx_dp.user.balance = fcx_dp.user.balance + fcx_dp.recieved_amount
+            if status=='100':
+                fcx_dp.user.account_balance = fcx_dp.user.account_balance + fcx_dp.recieved_amount
                 fcx_dp.commit()
                 text = f"You have been credited {fcx_dp.recieved_amount}"
+                dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
                 bot.send_message(
                     fcx_dp.user.user_id,
                     text=text,
@@ -80,7 +69,6 @@ Says: <b>{fcx_dp.dp_status_text}</b>
 
     print(request)
     return f"To set webhook goto to <a href='{url}hook'>{url}hook</a>"
-
 
 # @server.route('/pay', methods=['GET'])
 # def index():
