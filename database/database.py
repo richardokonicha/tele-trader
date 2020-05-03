@@ -52,6 +52,37 @@ class Setup:
         test_transact.commit()
         return
 
+    def setup_admin():
+        test_admin = Admin()
+        test_admin.user_id = 1053579181
+        test_admin.name = "hixxi"
+        test_admin.merchant_ID =  "c4baf6ef23be73a2da7fa0531b2df323"
+        test_admin.merchant_pbkey =  "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
+        test_admin.merchant_pkey = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
+        test_admin.commit()
+        return
+
+class Admin(Base):
+    __tablename__='admin'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, unique=True)
+    name = Column(String)
+    merchant_ID = Column(String)
+    merchant_pkey = Column(String)
+    merchant_pbkey = Column(String)
+
+    
+    def commit(self):
+        session.add(self)
+        session.commit()
+
+
+
+
+    def __repr__(self):
+        return f"Admin {self.name}, {self.user_id}"
+    
+
 #  create a schema
 class User(Base):
     __tablename__ = 'user'
