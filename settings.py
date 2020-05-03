@@ -3,12 +3,14 @@
 # TOKEN_TEST = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 from sqlalchemy import create_engine
 
-PUBLIC_KEY = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
-PRIVATE_KEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
-Merchant_ID = "c4baf6ef23be73a2da7fa0531b2df323"
-IPN_secret = "coinpaymentspeaks"
-ADMIN_ID = 1053579181
-DEBUG = not True
+
+# PUBLIC_KEY = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
+# PRIVATE_KEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
+# Merchant_ID = "c4baf6ef23be73a2da7fa0531b2df323"
+# IPN_secret = "coinpaymentspeaks"
+# ADMIN_ID = 1053579181
+
+DEBUG = True
 
 if DEBUG==False:
     print("\033[1;35;40m Running in production mode")
@@ -31,7 +33,7 @@ else:
     TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 
     # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-    URL = "https://f906f1e5.ngrok.io/"
+    URL = "https://2aa11b93.ngrok.io/"
     DATABASE_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432'
     ADMIN_ID = 1053579181
 
