@@ -7,13 +7,20 @@ from coinpayment import CoinPayments
 from datetime import datetime
 from decimal import *
 from database import database as db
-from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID
+# from settings import PRIVATE_KEY, PUBLIC_KEY, ADMIN_ID
 from settings import TOKEN, URL
 # from settings import TOKEN_TEST as TOKEN
 
 
 # bot = telebot.TeleBot(TOKEN, threaded=True)
 bot = telebot.TeleBot(TOKEN, threaded=True)
+admin_db = db.session.query(db.Admin).first()
+
+MERCHANT_ID = admin_db.merchant_ID
+PUBLIC_KEY = admin_db.merchant_pbkey
+PRIVATE_KEY = admin_db.merchant_pkey
+ADMIN_ID = admin_db.user_id
+
 
 payment_client = CoinPayments(PUBLIC_KEY, PRIVATE_KEY, ipn_url=URL + "pay")
 
