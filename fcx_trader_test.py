@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import os
 from config import *
 from settings import URL
@@ -16,6 +16,12 @@ def getMessage():
 # @server.route("/")
 # def pay():
 #     return "This is the fcx trading bot you can reach me @FCX_trading_bot on telegram"
+
+
+@server.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
 
 @server.route('/hook')
 def webhook():
