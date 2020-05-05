@@ -1,0 +1,13 @@
+.card-input {
+    border-radius: 5px;
+    font-size: 30px;
+    text-align: center;
+    width: 100%;
+}
+.setting-input {
+    border: 2px #343a40 solid;
+    width: 100%;
+    padding: 5px 20px 5px 20px;
+    border-radius: 5px;
+    font-size: 30px;
+}

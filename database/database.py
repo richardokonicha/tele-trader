@@ -71,13 +71,9 @@ class Admin(Base):
     merchant_pkey = Column(String)
     merchant_pbkey = Column(String)
 
-    
     def commit(self):
         session.add(self)
         session.commit()
-
-
-
 
     def __repr__(self):
         return f"Admin {self.name}, {self.user_id}"

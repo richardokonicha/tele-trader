@@ -1,10 +1,35 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 import os
 from config import *
 from settings import URL
-
-
+from database.forms import AdminForm
 server = Flask(__name__)
+
+
+def split_filter(n):
+    return n.split("T")[0]
+server.jinja_env.filters["splitfilter"] = split_filter
+
+def count_filter(n):
+    return len(n)
+server.jinja_env.filters["countfilter"] = count_filter
+
+def moneysum(n):
+    amounts = Decimal()
+    for transac in n:
+        amounts = amounts + transac.amount
+    return amounts
+server.jinja_env.filters["moneysum"] = moneysum
+
+def dashUpdate(form, admin_db):
+    admin_db.user_id = form['admin_userid']
+    admin_db.merchant_ID = form['merchant_ID']
+    admin_db.merchant_pbkey = form['merchant_pbkey']
+    admin_db.merchant_pkey = form['merchant_pkey']
+    admin_db.commit()
+    return admin_db
+
+##############################
 
 @server.route('/'+ TOKEN, methods=['POST'])
 def getMessage():
@@ -17,11 +42,31 @@ def getMessage():
 # def pay():
 #     return "This is the fcx trading bot you can reach me @FCX_trading_bot on telegram"
 
-
 @server.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    request_web = request
+    admin_db = db.session.query(db.Admin).first()
+    all_users = db.session.query(db.User).all()
+    deposit = db.session.query(db.Transactions).filter(db.Transactions.transaction_type=="deposit").all()
+    withdrawal = db.session.query(db.Transactions).filter(db.Transactions.transaction_type=="withdrawal").all()
+    investment = db.session.query(db.Transactions).filter(db.Transactions.transaction_type=="investments").all()
+    form = {
+        "users": all_users,
+        "deposit": deposit,
+        "withdrawal": withdrawal,
+        "investment": investment
+    }
+    return render_template('admin_dashboard/dist/index.html', form=form)
 
+@server.route('/settings', methods=["POST", "GET"])
+def settings():
+    request_web = request
+    admin_db = db.session.query(db.Admin).first()
+    form = request_web.form
+    if request_web.method == 'POST':
+        admin = dashUpdate(form, admin_db)
+        return render_template('admin_dashboard/dist/settings.html', form=admin_db)
+    return render_template('admin_dashboard/dist/settings.html', form=admin_db)
 
 @server.route('/hook')
 def webhook():
