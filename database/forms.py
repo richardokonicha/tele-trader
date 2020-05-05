@@ -1,3 +1,6 @@
-from wtforms.ext.sqlalchemy.orm import model_form
-from database import Admin
-AdminForm = model_form(Admin)
+from wtforms_alchemy import ModelForm
+from database.database import Admin
+
+class AdminForm(ModelForm):
+    class Meta:
+        model = Admin
