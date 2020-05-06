@@ -44,9 +44,6 @@
                                 ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard</a>
                                 <div class="sb-sidenav-menu-heading">sudo</div>
-                                <a class="nav-link" href="settings.html"
-                                ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Settings</a>
                             <a class="nav-link" href=" {{ url_for('settings') }}"
                                 ><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Settings</a>
@@ -84,6 +81,22 @@
                                     <div class="card-body text-dark">Admin User ID</div>
                                     <div class="card-footer">
                                         <input name="admin_userid" type="text" class=" card-input" style="color: black;" value="{{form.user_id}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5">
+                                <div class="card bg-white text-dark mb-4">
+                                    <div class="card-body text-dark">Duration of Reinvest</div>
+                                    <div class="card-footer">
+                                        <input name="duration_reinvest" type="text" class=" card-input" style="color: black;" value="{{form.duration_reinvest}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-5">
+                                <div class="card bg-white text-dark mb-4">
+                                    <div class="card-body text-dark">Daily Profits</div>
+                                    <div class="card-footer">
+                                        <input name="daily_profits" type="text" class=" card-input" style="color: black;" value="{{form.daily_profits}}">
                                     </div>
                                 </div>
                             </div>
