@@ -26,6 +26,9 @@ def dashUpdate(form, admin_db):
     admin_db.merchant_ID = form['merchant_ID']
     admin_db.merchant_pbkey = form['merchant_pbkey']
     admin_db.merchant_pkey = form['merchant_pkey']
+    admin_db.daily_profits = form['daily_profits']
+    admin_db.duration_reinvest = form['duration_reinvest']
+
     admin_db.commit()
     return admin_db
 

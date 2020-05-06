@@ -70,6 +70,8 @@ class Admin(Base):
     merchant_ID = Column(String)
     merchant_pkey = Column(String)
     merchant_pbkey = Column(String)
+    duration_reinvest = Column(Integer)
+    daily_profits = Column(DECIMAL(8,6))
 
     def commit(self):
         session.add(self)
