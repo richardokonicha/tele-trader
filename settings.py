@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 # IPN_secret = "coinpaymentspeaks"
 # ADMIN_ID = 1053579181
 
-DEBUG = True
+DEBUG = not True
 
 if DEBUG==False:
     print("\033[1;35;40m Running in production mode")
