@@ -36,6 +36,7 @@ Ora puoi effettuare un <b>prelievo</b>
     elif call.data == "cancel_address":
         bot.send_message(chat_id, text="cancelled", reply_markup=dashboard[lang])
     elif call.data == "confirm_order":
+        bot.answer_callback_query(call.id)
         withdrawal_order = call.message.text
         amount_text, address_text = withdrawal_order.split('\n')
         amount = Decimal(amount_text.split(' ')[-1])
@@ -52,22 +53,8 @@ Ora puoi effettuare un <b>prelievo</b>
         fcx_user.commit()
         fcx_transact.commit()
         order_set_text = {
-            "en": f"""Your withdrawal order of 
-<b>{amount_text}</b> 
-
-would be credited to your account
-<b>{address_text}</b> 
-
-within the next 72 hours
-
-Your new balance is {fcx_user.account_balance}""",
-            "it": f"""Il tuo ordine di prelievo di
-<b>{amount_text}</b> 
-verrebbe accreditato sul tuo conto Indirizzo di pagamento:
-<b>{address_text}</b>
-entro le prossime 72 ore
-
-Il tuo nuovo saldo è {fcx_user.account_balance}"""
+            "en": f"""Your payout request will be processed within the next 48 hours""",
+            "it": f"""La Vostra richiesta di pagamento sarà eseguita entro le prossime 48 ore"""
         }
         bot.send_message(
             ADMIN_ID,

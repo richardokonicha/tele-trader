@@ -12,12 +12,12 @@ def generate_address(message):
 
         amount = Decimal(message.text)
         dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
-        wait_text = {
-            "en": """Please wait for our system to generate your New Deposit Address.""",
-            "it": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
-        }
+        # wait_text = {
+        #     "en": """Please wait for our system to generate your New Deposit Address.""",
+        #     "it": """Si prega di attendere che il nostro sistema generi il Vostro nuovo indirizzo di deposito."""
+        # }
         arrival_text = {
-            "en": """Here is your personal BTC address for your Investments:""",
+            "en": """Here is your personal BTC address for your Investments ⬇️⬇️⬇️""",
             "it": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
         }
         duration_text = {
@@ -40,10 +40,10 @@ I fondi appariranno dopo la prima conferma della Blockchain.
             """
         }
         if amount < 5:
-            bot.send_message(
-                chat_id, text=wait_text.get(lang),
-                parse_mode="html"
-                )
+            # bot.send_message(
+            #     chat_id, text=wait_text.get(lang),
+            #     parse_mode="html"
+            #     )
             bot.send_chat_action(chat_id, action="typing")
             # try:
             # except KeyError:
@@ -130,8 +130,10 @@ def deposit(message):
     lang = fcx_user.language
     message_id = message.message_id
     deposit_amount_text = {
-        "en": """<b>Enter the amount you wish to deposit</b>""",
-        "it": """Enter the amount you wish to deposit(italian"""
+        "en": """<b>Enter the amount you wish to deposit 
+(min: 0.025 BTC max: 5 BTC)</b>""",
+        "it": """Enter the amount you wish to deposit(italian
+(min: 0.025 BTC max: 5 BTC)"""
     }
     bot.send_message(
         chat_id,

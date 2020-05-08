@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 # IPN_secret = "coinpaymentspeaks"
 # ADMIN_ID = 1053579181
 
-DEBUG = not True
+DEBUG = True
 
 if DEBUG==False:
     print("\033[1;35;40m Running in production mode")
@@ -33,7 +33,7 @@ else:
     TOKEN = "852053528:AAHL_ryUUJ1JOhenzmI0WDiayAnxxqGFmyU"
 
     # TOKEN = "746406709:AAHGsGOKxHwPOhRMdUOM5JNKsVxI2cCTbyQ" #fcxtrader bot
-    URL = "https://2aa11b93.ngrok.io/"
+    URL = "https://3a7a746b.ngrok.io/"
     DATABASE_URL = 'postgres+psycopg2://postgres:postgres@localhost:5432'
     ADMIN_ID = 1053579181
 
