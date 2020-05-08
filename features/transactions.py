@@ -20,9 +20,8 @@ def transaction(message):
     reinvestments = []
     commissions = []
     try:
-            
         for value in transactions:
-            if value.transaction_type=="deposit":
+            if value.transaction_type=="deposit" and value.status=="Completed":
                 deposits.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
             if value.transaction_type=="withdrawal":
                 payouts.append(value.date.split("T")[0]+"   "+str(value.amount)+" BTC")
