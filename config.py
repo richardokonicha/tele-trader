@@ -142,7 +142,9 @@ en_confirm_reinvestment_btn = types.InlineKeyboardButton(text="Confirm", callbac
 it_confirm_reinvestment_btn = types.InlineKeyboardButton(text="Confermare", callback_data="confirm_reinvestment")
 
 en_cancel_reinvestment_btn = types.InlineKeyboardButton(text="Cancel", callback_data="cancel_reinvestment")
-it_cancel_reinvestment_btn = types.InlineKeyboardButton(text="Annulla", callback_data="cancel_reinvestment")
+it_cancel_reinvestment_btn = types.InlineKeyboardButton(
+    text="Annulla", callback_data="cancel_reinvestment"
+    )
 
 en_confirm_reinvestment_markup.add(en_confirm_reinvestment_btn, en_cancel_reinvestment_btn)
 it_confirm_reinvestment_markup.add(it_confirm_reinvestment_btn, it_cancel_reinvestment_btn)

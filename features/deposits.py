@@ -1,6 +1,5 @@
-
 from config import *
-
+# from config import 
 
 def generate_address(message):
     user_id = message.from_user.id
@@ -53,7 +52,6 @@ I fondi appariranno dopo la prima conferma della Blockchain.
                 chat_id, text=arrival_text.get(lang)
             )
             # payment_details = payment_client.create_transaction({"amount":amount, "currency1":"LTCT", "currency2":"LTCT"})
-            payment_details = payment_client.create_transaction({"amount":amount, "currency1":"btc", "currency2":"btc"})
 
             try:
                 pd = payment_details["result"]

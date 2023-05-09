@@ -1,4 +1,6 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
+import urllib.parse
+import urllib.error
 import hmac
 import hashlib
 import json
@@ -10,8 +12,8 @@ class CoinPayments():
 
     def __init__(self, public_key, private_key, ipn_url=None):
         self.url = 'https://www.coinpayments.net/api.php'
-        self.publicKey = public_key
-        self.privateKey = private_key
+        self.public_key = public_key
+        self.private_key = private_key
         self.ipn_url = ipn_url
         self.format = 'json'
         self.version = 1
@@ -24,7 +26,8 @@ class CoinPayments():
         """
         if not getattr(settings, 'COINPAYMENTS_API_KEY', None) or \
            not getattr(settings, 'COINPAYMENTS_API_SECRET', None):
-            raise ImproperlyConfigured('COINPAYMENTS_API_KEY and COINPAYMENTS_API_SECRET are required!')
+            raise ImproperlyConfigured(
+                'COINPAYMENTS_API_KEY and COINPAYMENTS_API_SECRET are required!')
         ipn_url = getattr(settings, 'COINPAYMENTS_IPN_URL', None)
         if ipn_url:
             if not getattr(settings, 'COINPAYMENTS_IPN_SECRET', None) or \
@@ -41,7 +44,7 @@ class CoinPayments():
         change in the order and the hmacs wouldn't match
         """
         encoded = urllib.parse.urlencode(params).encode('utf-8')
-        return encoded, hmac.new(bytearray(self.privateKey, 'utf-8'), encoded, hashlib.sha512).hexdigest()
+        return encoded, hmac.new(bytearray(self.private_key, 'utf-8'), encoded, hashlib.sha512).hexdigest()
 
     def request(self, request_method, **params):
         """
@@ -56,49 +59,54 @@ class CoinPayments():
 
         proxy_host = "http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80"
 
-        proxyDict = {
-            'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80', 
-            'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80'
-            }
+        proxy_dict = {
+            # 'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
+            # 'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
+            'https': 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080'
+        }
 
-
-        #  proxyDict = {
-        #      "http"  : os.environ.get('FIXIE_URL', ''), 
+        #  proxy_dict = {
+        #      "http"  : os.environ.get('FIXIE_URL', ''),
         #      "https" : os.environ.get('FIXIE_URL', '')
         #      }
         if request_method == 'get':
             req = urllib.request.Request(self.url, headers=headers)
         elif request_method == 'post':
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
-            req = urllib.request.Request(self.url, data=encoded, headers=headers)
+            req = urllib.request.Request(
+                self.url, data=encoded, headers=headers)
         try:
             response = urllib.request.urlopen(req)
-            status_code = response.getcode()
+            # status_code = response.getcode()
             response_body = response.read()
-        except urllib.error.HTTPError as e:
-            status_code = e.getcode()
-            response_body = e.read()
+        except urllib.error.HTTPError as error:
+            status_code = error.getcode()
+            response_body = error.read()
         return json.loads(response_body)
 
-
     def irequest(self, request_method, **params):
+        """
+        The basic request that all API calls
+        """
         encoded, sig = self.create_hmac(**params)
         headers = {'hmac': sig}
-        proxyDict = {
-            'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80', 
-            'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80'
-            }
-
+        proxy_dict = {
+            # 'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
+            # 'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
+            'https': 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080'
+        }
         try:
             if request_method == 'get':
-                reqs = requests.get(self.url, headers=headers, proxies=proxyDict)
+                reqs = requests.get(
+                    self.url, headers=headers, proxies=proxy_dict, timeout=1000)
             elif request_method == 'post':
                 headers['Content-Type'] = 'application/x-www-form-urlencoded'
-                reqs = requests.post(self.url, data=encoded,  headers=headers, proxies=proxyDict)
+                reqs = requests.post(self.url, data=encoded,
+                                     headers=headers, proxies=proxy_dict, timeout=1000)
             response_body = reqs.text
-        except (requests.exceptions.ConnectionError, requests.exceptions.ProxyError) as e:
-            status_code = e.getcode()
-            response_body = e.read()
+        except (requests.exceptions.ConnectionError, requests.exceptions.ProxyError) as error:
+            # status_code = error.getcode()
+            response_body = error.read()
         return json.loads(response_body)
 
     def create_transaction(self, params=None):
@@ -111,7 +119,7 @@ class CoinPayments():
         if self.ipn_url:
             params.update({'ipn_url': self.ipn_url})
         params.update({'cmd': 'create_transaction',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -124,7 +132,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_basic_info',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -137,7 +145,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'rates',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -150,7 +158,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'balances',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -163,7 +171,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_deposit_address',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -178,7 +186,7 @@ class CoinPayments():
         if self.ipn_url:
             params.update({'ipn_url': self.ipn_url})
         params.update({'cmd': 'get_callback_address',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -193,7 +201,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'create_transfer',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -207,7 +215,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'create_withdrawal',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -220,7 +228,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'convert',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -233,7 +241,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_withdrawal_history',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -246,7 +254,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_withdrawal_info',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -259,7 +267,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_conversion_info',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
@@ -272,7 +280,7 @@ class CoinPayments():
         if params is None:
             params = {}
         params.update({'cmd': 'get_tx_info_multi',
-                       'key': self.publicKey,
+                       'key': self.public_key,
                        'version': self.version,
                        'format': self.format})
         return self.irequest('post', **params)
