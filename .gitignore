@@ -1,7 +1,6 @@
 launch_client.py
 datajson.py
 alchemy.py
-.vscode/launch.json
 __pycache__[*]+.pyc
 core.py
 __pycache__
