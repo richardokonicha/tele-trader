@@ -1,6 +1,3 @@
 {
-    "python.pythonPath": "/home/reechee/.virtualenvs/BOT/bin/python3",
-    "python.linting.flake8Enabled": false,
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+  "editor.formatOnSave": true
 }

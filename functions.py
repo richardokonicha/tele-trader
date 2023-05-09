@@ -1,15 +1,7 @@
-#########
 import datetime
 import json
-from email import message
 
 database = "database/database.json"
-##########################
-# functions to modify user_id fields on json
-# examples lang("Uche", "russian")  first_name("Richard", 'Reechee lake')
-
-
-
 
 def update_user(user, data):
     with open(database, 'r', encoding='utf-8') as file:
@@ -18,8 +10,7 @@ def update_user(user, data):
     with open(database, 'w', encoding='utf-8') as file_wr:
         json.dump(file_json, file_wr, indent=2)
     return file_json[user]
-    
-    
+
 
 def get_user(message):
     with open(database, 'r', encoding='utf-8') as file:
@@ -29,14 +20,12 @@ def get_user(message):
     return file_json[id]
 
 
-
 def get_user_from_call(message):
     with open(database, 'r', encoding='utf-8') as file:
         file_json = json.load(file)
     user_info = message.json['chat']
     id = str(user_info["id"])
     return file_json[id]
-
 
 
 def get_add_user(message):
@@ -74,7 +63,7 @@ def get_add_user(message):
 def set_lang(user_id, language):
     """sets user_id language and saves to json"""
     with open(database, 'r', encoding='utf-8') as file:
-        file_json = json.load(file)    
+        file_json = json.load(file)
     file_json[user_id]["lang"] = language
     with open(database, 'w', encoding='utf-8') as file_wr:
         json.dump(file_json, file_wr, indent=2)
@@ -84,9 +73,8 @@ def set_lang(user_id, language):
 def first_name(user_id, name):
     """sets user_id first_name and saves to json"""
     with open(database, 'r', encoding='utf-8') as file:
-        file_json = json.load(file)    
+        file_json = json.load(file)
     file_json[user_id]["first_name"] = name
     with open(database, 'w', encoding='utf-8') as file_wr:
         json.dump(file_json, file_wr, indent=2)
     return name
-

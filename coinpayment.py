@@ -6,10 +6,10 @@ import hashlib
 import json
 from django.conf import settings, ImproperlyConfigured
 import requests
+import os
 
 
 class CoinPayments():
-
     def __init__(self, public_key, private_key, ipn_url=None):
         self.url = 'https://www.coinpayments.net/api.php'
         self.public_key = public_key
@@ -57,18 +57,9 @@ class CoinPayments():
 
         headers = {'hmac': sig}
 
-        proxy_host = "http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80"
-
         proxy_dict = {
-            # 'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
-            # 'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
-            'https': 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080'
+            "https": os.environ.get('FIXIE_URL', 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080')
         }
-
-        #  proxy_dict = {
-        #      "http"  : os.environ.get('FIXIE_URL', ''),
-        #      "https" : os.environ.get('FIXIE_URL', '')
-        #      }
         if request_method == 'get':
             req = urllib.request.Request(self.url, headers=headers)
         elif request_method == 'post':
@@ -91,8 +82,6 @@ class CoinPayments():
         encoded, sig = self.create_hmac(**params)
         headers = {'hmac': sig}
         proxy_dict = {
-            # 'http': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
-            # 'https': 'http://fixie:cIOCBSpAPnau6FY@olympic.usefixie.com:80',
             'https': 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080'
         }
         try:
