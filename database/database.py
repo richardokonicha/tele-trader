@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, Column, String, Integer, Boolean, ForeignK
 from sqlalchemy.ext.declarative import declarative_base
 from settings import engine
 
-# connect engine to the database 
+# connect engine to the database
 
 # export DATABASE_URL=postgres://$(whoami)
 # postgres://reechee
@@ -48,7 +48,8 @@ class Setup:
     def test_users():
         test_user = User(user_id=7878, name="tester_org")
         test_user.commit()
-        test_transact = Transactions(user_id=7878, transaction_type="withdrawal", amount=0.5)
+        test_transact = Transactions(
+            user_id=7878, transaction_type="withdrawal", amount=0.5)
         test_transact.commit()
         return
 
@@ -56,14 +57,19 @@ class Setup:
         test_admin = Admin()
         test_admin.user_id = 1053579181
         test_admin.name = "hixxi"
-        test_admin.merchant_ID =  "c4baf6ef23be73a2da7fa0531b2df323"
-        test_admin.merchant_pbkey =  "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
+        test_admin.merchant_ID = "c4baf6ef23be73a2da7fa0531b2df323"
+        test_admin.merchant_pbkey = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14b52449183"
         test_admin.merchant_pkey = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E940F5839Dd"
         test_admin.commit()
         return
 
+# Setup.test_users()
+# Setup.activate_db()
+# Setup.setup_admin()
+
+
 class Admin(Base):
-    __tablename__='admin'
+    __tablename__ = 'admin'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, unique=True)
     name = Column(String)
@@ -71,7 +77,7 @@ class Admin(Base):
     merchant_pkey = Column(String)
     merchant_pbkey = Column(String)
     duration_reinvest = Column(Integer)
-    daily_profits = Column(DECIMAL(8,6))
+    daily_profits = Column(DECIMAL(8, 6))
 
     def commit(self):
         session.add(self)
@@ -79,7 +85,7 @@ class Admin(Base):
 
     def __repr__(self):
         return f"Admin {self.name}, {self.user_id}"
-    
+
 
 #  create a schema
 class User(Base):
@@ -95,10 +101,10 @@ class User(Base):
     last_visted = Column(String)
     wallet_address = Column(String)
 
-    account_balance = Column(DECIMAL(8,6))
-    active_investment = Column(DECIMAL(8,6))
-    pending_investment = Column(DECIMAL(8,6))
-    active_reinvestment = Column(DECIMAL(8,6))
+    account_balance = Column(DECIMAL(8, 6))
+    active_investment = Column(DECIMAL(8, 6))
+    pending_investment = Column(DECIMAL(8, 6))
+    active_reinvestment = Column(DECIMAL(8, 6))
     transactions = relationship("Transactions", uselist=True, backref="user")
 
     def __init__(self, user_id, name, is_admin=False, is_new_user=True):
@@ -111,7 +117,7 @@ class User(Base):
         self.active_investment = Decimal()
         self.active_reinvestment = Decimal()
         self.pending_investment = Decimal()
-        
+
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
 
@@ -154,12 +160,12 @@ class Transactions(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user.user_id"))
     transaction_type = Column(String)
-    amount = Column(DECIMAL(8,6))
-    recieved_amount = Column(DECIMAL(8,6))
+    amount = Column(DECIMAL(8, 6))
+    recieved_amount = Column(DECIMAL(8, 6))
     wallet_address = Column(String)
     date = Column(String)
     start_date = Column(String)
-    balance = Column(DECIMAL(8,6))
+    balance = Column(DECIMAL(8, 6))
     # deposit
     dp_txn_id = Column(String, unique=True)
     dp_address = Column(String)
@@ -168,9 +174,6 @@ class Transactions(Base):
     dp_status = Column(String)
     dp_status_text = Column(String)
     status = Column(String)
-    
-
-
 
     # users = relationship("User",uselist=True, back_populates="transaction")
 
@@ -182,7 +185,7 @@ class Transactions(Base):
         wallet_address=None,
         balance=None,
         status="Pending"
-        ):
+    ):
         self.user_id = user_id
         self.transaction_type = transaction_type
         self.amount = amount
@@ -190,12 +193,12 @@ class Transactions(Base):
         self.date = datetime.now().isoformat()
         self.start_date = datetime.now().replace(
             day=(datetime.now().day+(7-datetime.now().weekday()))
-            ).isoformat()
+        ).isoformat()
         self.close_date = (
             datetime.now().replace(
                 day=(datetime.now().day+(7-datetime.now().weekday()))
-                ) + timedelta(days=180)
-            ).isoformat()
+            ) + timedelta(days=180)
+        ).isoformat()
         self.balance = balance
         self.status = status
 
@@ -206,24 +209,23 @@ class Transactions(Base):
             return transaction
         else:
             return None
-    
+
     @classmethod
     def get_txn_id(cls, txn_id):
         return session.query(Transactions).filter_by(dp_txn_id=txn_id).first()
-    
+
     def commit(self):
         session.add(self)
         session.commit()
 
     def start_date(self):
         return (self.start_date).isoformat().strftime("%A %d. %B %Y")
-    
+
     def close_date(self):
         return (self.start_date + timedelta(days=180)).isoformat().strftime("%A %d. %B %Y")
 
     def __repr__(self):
         return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"
-
 
 
 # class Deposits(Base):
@@ -238,14 +240,11 @@ class Transactions(Base):
 #     date = Column(DateTime)
 
 
-
 #     def commit(self):
 #         session.add(self)
 #         session.commit()
-    
+
 #     def __repr__(self):
 #         return f"Deposit {self.txn_id} amount {self.amount}"
 
-
 Base.metadata.create_all(engine)
-
